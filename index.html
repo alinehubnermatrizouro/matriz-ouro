@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matriz Ouro — Área do Assinante</title>
+<style>
+:root{
+  --ouro:#E8C25A; --ouro-f:#D4AF37; --ouro-esc:#8a6d1f;
+  --grafite:#0f131b; --grafite2:#161b26; --grafite3:#1f2532; --painel:#141924;
+  --verde:#28d17c; --azul:#4aa8ff; --vermelho:#f0685f;
+  --txt:#f2f5fb; --txt2:#9aa6bd; --txt3:#6b7690; --linha:#2a3242;
+  --raio:16px; --sombra:0 20px 60px rgba(0,0,0,.5);
+  --sans:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --serif:Georgia,'Times New Roman',serif;
+  --mono:ui-monospace,'SFMono-Regular','Consolas',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);color:var(--txt);line-height:1.6;
+  background:
+   radial-gradient(1100px 600px at 80% -15%, rgba(232,194,90,.10), transparent),
+   radial-gradient(800px 700px at -10% 30%, rgba(74,168,255,.06), transparent),
+   var(--grafite);
+  min-height:100vh;-webkit-font-smoothing:antialiased}
+.oculto{display:none!important}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+a{color:var(--azul);text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none}
+::selection{background:rgba(232,194,90,.3)}
+.eyebrow{font-size:11.5px;letter-spacing:3.5px;text-transform:uppercase;color:var(--ouro);font-weight:700}
+.serif{font-family:var(--serif)}
+
+/* ---------- LOGIN ---------- */
+.login-tela{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr}
+@media(max-width:860px){.login-tela{grid-template-columns:1fr}}
+.login-brand{padding:56px 54px;display:flex;flex-direction:column;justify-content:space-between;
+  background:linear-gradient(160deg,rgba(232,194,90,.12),rgba(20,25,36,.2)),var(--grafite2);
+  border-right:1px solid var(--linha);position:relative;overflow:hidden}
+.login-brand .glow{position:absolute;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,194,90,.18),transparent 60%);top:-120px;right:-120px}
+.wordmark{font-family:var(--serif);font-size:34px;font-weight:700;letter-spacing:.5px}
+.wordmark span{background:linear-gradient(120deg,var(--ouro),#fff2cc,var(--ouro-f));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.login-brand h2{font-size:30px;line-height:1.25;margin:24px 0 14px;max-width:15ch;font-weight:800}
+.login-brand p{color:var(--txt2);font-size:15px;max-width:40ch}
+.brand-list{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+.brand-list div{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:var(--txt2)}
+.brand-list .kk{color:var(--ouro);font-weight:800;flex-shrink:0}
+.login-brand .credito{font-size:12px;color:var(--txt3);letter-spacing:1px}
+
+.login-form-wrap{display:grid;place-items:center;padding:40px 30px}
+.login-card{width:100%;max-width:380px}
+.login-card .tag{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--txt2)}
+.login-card h1{font-size:26px;margin:6px 0 4px;font-weight:800}
+.assinatura-status{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;
+  color:var(--verde);background:rgba(40,209,124,.12);border:1px solid rgba(40,209,124,.3);
+  padding:5px 11px;border-radius:20px;margin:10px 0 20px}
+.assinatura-status i{width:7px;height:7px;border-radius:50%;background:var(--verde);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+label.lab{display:block;font-size:12px;color:var(--txt2);margin:15px 0 7px;letter-spacing:.5px;text-transform:uppercase}
+input{width:100%;background:var(--grafite);border:1px solid var(--linha);color:var(--txt);
+  padding:13px 15px;border-radius:11px;font-size:15px;outline:none;transition:.15s}
+input:focus{border-color:var(--ouro);box-shadow:0 0 0 3px rgba(232,194,90,.14)}
+.btn-ouro{width:100%;margin-top:22px;background:linear-gradient(135deg,var(--ouro),var(--ouro-f));
+  color:#20180a;padding:14px;border-radius:12px;font-weight:800;font-size:15px;letter-spacing:.4px;
+  transition:.18s;box-shadow:0 10px 26px rgba(212,175,55,.3)}
+.btn-ouro:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.troca{text-align:center;margin-top:16px;font-size:13.5px;color:var(--txt2)}
+.troca b{color:var(--ouro);cursor:pointer}
+.msg{margin-top:14px;font-size:13px;text-align:center;min-height:16px}
+.msg.erro{color:var(--vermelho)} .msg.ok{color:var(--verde)}
+.nota{margin-top:22px;font-size:11.5px;color:var(--txt3);border-top:1px solid var(--linha);padding-top:16px;line-height:1.6}
+
+/* frequência */
+.barra-row{display:flex;align-items:center;gap:10px;margin:5px 0}
+.barra-row .bnum{width:34px;font-family:var(--mono);font-weight:700;font-size:13px;text-align:right}
+.barra-row .bnum.mo{color:var(--ouro)} .barra-row .bnum.mi{color:var(--azul)}
+.barra-track{flex:1;background:var(--grafite);border-radius:8px;overflow:hidden;height:20px;border:1px solid var(--linha)}
+.barra-fill{height:100%;border-radius:8px 0 0 8px;transition:width .6s}
+.barra-fill.mo{background:linear-gradient(90deg,var(--ouro-esc),var(--ouro))}
+.barra-fill.mi{background:linear-gradient(90deg,#1f6fbf,var(--azul))}
+.barra-row .bval{width:78px;font-size:12px;color:var(--txt2);font-family:var(--mono)}
+.explica-cor{display:flex;gap:20px;flex-wrap:wrap;margin:6px 0 4px}
+.explica-cor div{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;color:var(--txt2);flex:1;min-width:220px}
+.explica-cor .cq{width:26px;height:26px;border-radius:7px;flex-shrink:0;margin-top:1px}
+/* planos */
+.plano{border:1px solid var(--linha);border-radius:16px;padding:24px;background:var(--grafite);position:relative}
+.plano.destaque{border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.08),var(--grafite))}
+.plano .pt{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--ouro)}
+.plano .pv{font-size:34px;font-weight:800;margin:8px 0;font-family:var(--mono)}
+.plano .pv small{font-size:15px;color:var(--txt2);font-weight:400}
+.plano ul{list-style:none;margin-top:12px}
+.plano li{font-size:13.5px;color:var(--txt2);padding:6px 0 6px 22px;position:relative}
+.plano li:before{content:"✓";position:absolute;left:0;color:var(--verde);font-weight:800}
+.aviso-senha{background:linear-gradient(160deg,rgba(240,104,95,.1),transparent);border:1px solid rgba(240,104,95,.3);border-radius:12px;padding:15px 18px;font-size:13.5px;color:var(--txt)}
+.aviso-senha b{color:var(--vermelho)}
+.dica-aposta{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(160deg,rgba(40,209,124,.09),transparent);border:1px solid rgba(40,209,124,.32);border-radius:12px;padding:15px 18px;margin-top:16px;font-size:13.5px;color:var(--txt2)}
+.dica-aposta .ic{font-size:20px;line-height:1}
+.dica-aposta b{color:var(--verde)}
+/* form bolão */
+.form-bolao label.lab{margin-top:14px}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:13px;color:var(--txt2)}
+.check input{width:auto;margin-top:3px}
+.tabela-val{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+.tabela-val th,.tabela-val td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--linha)}
+.tabela-val th{color:var(--txt2);font-size:12px;text-transform:uppercase}
+.tabela-val td.mono{font-family:var(--mono);color:var(--ouro);font-weight:700}
+.sig-wrap{margin-top:10px}
+.sig-canvas{width:100%;height:150px;background:#fff;border:1px solid var(--linha);border-radius:12px;touch-action:none;display:block}
+.sig-actions{display:flex;gap:10px;margin-top:8px}
+.termo-box{background:var(--grafite);border:1px solid var(--linha);border-radius:12px;padding:18px;max-height:280px;overflow-y:auto;font-size:13.5px;color:var(--txt2);line-height:1.6}
+.termo-box h4{color:var(--txt);margin:10px 0 4px;font-size:14px}
+.selo-amb{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:12px;color:#3a2a00;background:linear-gradient(135deg,#f0a92b,#d98b12);padding:4px 10px;border-radius:20px}
+
+/* ---------- RESPONSIVO (mobile) ---------- */
+@media(max-width:860px){
+  .login-tela{grid-template-columns:1fr}
+  .login-brand{padding:40px 26px 34px}
+  .login-brand h2{font-size:24px}
+  .login-brand .brand-list{margin-top:18px}
+  .login-form-wrap{padding:32px 22px 46px}
+}
+@media(max-width:560px){
+  .wrap{padding:0 14px}
+  .login-brand{padding:32px 20px 28px}
+  .wordmark{font-size:28px}
+  .login-brand h2{font-size:22px}
+  .top .wordmark{font-size:19px}
+  .top .right span:nth-child(2){display:none}
+  nav.abas{gap:6px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding:12px 0}
+  nav.abas button{white-space:nowrap;padding:9px 13px;font-size:13px}
+  .head h2{font-size:23px}
+  .hero h1{font-size:26px}
+  .card{padding:18px}
+  .controles{flex-direction:column;align-items:stretch}
+  .controles .btn-acao{width:100%}
+  .jogo{gap:12px}
+  .jogo .volante.mini{display:none}
+  .dz{width:31px;height:31px;font-size:13px}
+  .metrica .v{font-size:23px}
+  .volante{max-width:260px}
+}
+@media(max-width:380px){
+  .dz{width:27px;height:27px;font-size:12px;border-radius:7px}
+}
+.passos-cad{margin:14px 0 6px;display:flex;flex-direction:column;gap:9px}
+.passos-cad div{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--txt2)}
+.passos-cad span{width:20px;height:20px;flex-shrink:0;border-radius:50%;background:rgba(232,194,90,.14);border:1px solid var(--ouro-esc);color:var(--ouro);font-size:11px;font-weight:800;display:grid;place-items:center;margin-top:1px}
+.passos-cad b{color:var(--txt)} .passos-cad i{color:var(--ouro);font-style:normal}
+.dica{font-size:11.5px;color:var(--txt3);margin-top:6px}
+.senha-box{position:relative;display:flex;align-items:center}
+.senha-box input{padding-right:48px}
+.olho{position:absolute;right:6px;background:transparent;border:none;font-size:18px;line-height:1;padding:8px;border-radius:8px;opacity:.65;transition:.15s}
+.olho:hover{opacity:1;background:var(--grafite3)}
+.olho.aberto{opacity:1}
+
+/* ---------- APP ---------- */
+.faixa{background:var(--grafite2);border-bottom:1px solid var(--linha);font-size:12.5px;
+  color:var(--txt2);text-align:center;padding:8px 14px}
+.faixa b{color:var(--ouro)}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:18px 0;border-bottom:1px solid var(--linha)}
+.top .wordmark{font-size:22px}
+.top .right{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--txt2)}
+.btn-sair{background:transparent;border:1px solid var(--linha);color:var(--txt2);padding:8px 13px;border-radius:9px;font-size:12px}
+.btn-sair:hover{border-color:var(--ouro);color:var(--ouro)}
+nav.abas{display:flex;gap:7px;flex-wrap:wrap;padding:16px 0;position:sticky;top:0;background:var(--grafite);z-index:30;border-bottom:1px solid var(--linha)}
+nav.abas button{background:var(--grafite2);border:1px solid var(--linha);color:var(--txt2);padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:600;transition:.15s}
+nav.abas button:hover{color:var(--txt)}
+nav.abas button.on{background:linear-gradient(135deg,var(--ouro),var(--ouro-f));color:#20180a;border-color:transparent;box-shadow:0 6px 18px rgba(212,175,55,.25)}
+section.pg{padding:34px 0}
+.head{margin-bottom:26px}
+.head h2{font-size:27px;font-weight:800;margin:8px 0 8px}
+.head p{color:var(--txt2);font-size:15px;max-width:70ch}
+.card{background:var(--painel);border:1px solid var(--linha);border-radius:var(--raio);padding:26px;box-shadow:var(--sombra);margin-bottom:20px}
+.card.glow{background:linear-gradient(160deg,rgba(232,194,90,.06),transparent),var(--painel)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+@media(max-width:820px){.hero{grid-template-columns:1fr}}
+.hero h1{font-size:32px;font-weight:800;line-height:1.2;margin:12px 0}
+.hero h1 .g{background:linear-gradient(120deg,var(--ouro),#fff2cc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--txt2);font-size:15.5px;max-width:48ch}
+
+/* volante */
+.volante{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:300px;margin:0 auto}
+.volante.mini{max-width:160px;gap:4px}
+.cel{aspect-ratio:1;display:grid;place-items:center;border-radius:11px;font-family:var(--mono);font-weight:700;font-size:16px;
+  background:var(--grafite);border:1.5px solid var(--linha);color:var(--txt3);transition:.35s;position:relative}
+.volante.mini .cel{font-size:10px;border-radius:6px;border-width:1px}
+.cel.on{background:linear-gradient(140deg,var(--ouro),var(--ouro-f));color:#20180a;border-color:transparent;
+  box-shadow:0 6px 16px rgba(212,175,55,.4);transform:scale(1.05)}
+.cel.on.mio{background:linear-gradient(140deg,var(--azul),#1f6fbf);color:#fff}
+
+/* controles */
+.controles{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end}
+.ctrl{flex:1;min-width:150px}
+.ctrl label{font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:.6px;display:block;margin-bottom:7px}
+.ctrl .hint{font-size:11.5px;color:var(--txt3);margin-top:6px}
+.btn-acao{background:linear-gradient(135deg,var(--verde),#17a55f);color:#04220f;padding:14px 26px;border-radius:12px;font-weight:800;font-size:14.5px;box-shadow:0 10px 24px rgba(40,209,124,.28);transition:.18s}
+.btn-acao:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.btn-sec{background:var(--grafite3);color:var(--txt);border:1px solid var(--linha);padding:14px 22px;border-radius:12px;font-weight:700;font-size:14px}
+.btn-sec:hover{border-color:var(--azul)}
+
+/* jogos */
+.jogo{background:var(--grafite);border:1px solid var(--linha);border-radius:14px;padding:16px 18px;margin-top:14px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;animation:sobe .4s ease}
+@keyframes sobe{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.jogo .idj{font-weight:800;color:var(--ouro);font-size:14px;min-width:46px}
+.dz-row{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.dz{width:35px;height:35px;border-radius:9px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:14px;background:var(--grafite3);border:1px solid var(--linha)}
+.dz.mo{color:var(--ouro);border-color:var(--ouro-esc)}
+.dz.mi{color:var(--azul);border-color:#245b8a}
+.mini-metric{font-size:11.5px;color:var(--txt3);font-family:var(--mono);white-space:nowrap}
+.selo{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:13.5px;color:#04220f;background:linear-gradient(135deg,var(--ouro),var(--ouro-f));padding:8px 15px;border-radius:22px}
+
+/* métricas */
+.metricas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.metrica{background:var(--grafite);border:1px solid var(--linha);border-radius:13px;padding:18px}
+.metrica .v{font-size:28px;font-weight:800;color:var(--ouro);font-family:var(--mono);line-height:1}
+.metrica .l{font-size:12.5px;color:var(--txt2);margin-top:6px}
+.prog{height:11px;background:var(--grafite);border-radius:20px;overflow:hidden;border:1px solid var(--linha);margin:16px 0}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ouro),var(--verde));transition:width .1s}
+
+/* estudos */
+.estudo{border-radius:14px;border:1px solid var(--linha);padding:22px;background:var(--grafite);transition:.2s;height:100%}
+.estudo:hover{border-color:var(--ouro-esc);transform:translateY(-3px)}
+.estudo .n{font-family:var(--mono);color:var(--ouro-esc);font-size:13px;font-weight:700}
+.estudo h3{font-size:17px;margin:8px 0 4px}
+.estudo .esp{font-size:11.5px;color:var(--azul);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.estudo p{font-size:13.5px;color:var(--txt2)}
+.filtro-item{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--linha)}
+.filtro-item:last-child{border-bottom:none}
+.filtro-item .fic{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;
+  background:linear-gradient(140deg,rgba(232,194,90,.16),rgba(232,194,90,.04));color:var(--ouro);font-weight:800;font-family:var(--mono);font-size:15px;border:1px solid var(--ouro-esc)}
+.filtro-item h4{font-size:15px;margin-bottom:3px}
+.filtro-item p{font-size:13.5px;color:var(--txt2)}
+.filtro-item .faixa-tag{font-size:11.5px;color:var(--ouro);font-family:var(--mono);margin-top:4px}
+
+/* verdade */
+.verdade{background:linear-gradient(160deg,rgba(240,104,95,.08),rgba(74,168,255,.05));border:1px solid rgba(240,104,95,.28)}
+.verdade h3{color:var(--vermelho)}
+.destaque{background:var(--grafite);border-left:3px solid var(--ouro);border-radius:11px;padding:16px 18px;margin:14px 0;font-size:15px}
+.destaque b{color:var(--ouro)}
+.passo{display:flex;gap:16px;margin-bottom:18px}
+.passo .pn{width:34px;height:34px;border-radius:50%;background:var(--grafite3);border:1px solid var(--ouro-esc);color:var(--ouro);display:grid;place-items:center;font-weight:800;flex-shrink:0}
+.passo h4{font-size:15.5px;margin-bottom:2px}
+.passo p{font-size:14px;color:var(--txt2)}
+
+footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;color:var(--txt2);font-size:12.5px;text-align:center}
+.resp{background:var(--grafite2);border:1px solid var(--linha);border-radius:12px;padding:15px 18px;margin:18px 0;font-size:13px;color:var(--txt2)}
+.resp b{color:var(--verde)}
+.credito-rod{margin-top:10px;font-size:12px;letter-spacing:.5px}
+.credito-rod b{color:var(--ouro)}
+</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="login" class="login-tela">
+  <div class="login-brand">
+    <div class="glow"></div>
+    <div>
+      <div class="wordmark">Matriz <span>Ouro</span></div>
+      <h2>Engenharia combinatória a serviço da sua banca.</h2>
+      <p>Uma área exclusiva onde você monta sua própria matriz de jogos, filtrada pelo rigor do Padrão Ouro — com os estudos das maiores referências do país explicados de forma clara.</p>
+      <div class="brand-list">
+        <div><span class="kk">✦</span><span>Gere jogos que passam automaticamente nos 6 filtros estáticos consagrados no estudo de loterias.</span></div>
+        <div><span class="kk">✦</span><span>Veja a cobertura real medida sobre os 3.268.760 sorteios possíveis.</span></div>
+        <div><span class="kk">✦</span><span>Entenda o porquê de cada regra — conhecimento que fica com você.</span></div>
+        <div><span class="kk">✦</span><span>Sem promessa de prêmio. Estudo e disciplina, com total transparência.</span></div>
+      </div>
+    </div>
+    <div class="credito">DESENVOLVIDO POR AJ HUBNER — AGÊNCIA DIGITAL</div>
+  </div>
+
+  <div class="login-form-wrap">
+    <div class="login-card">
+      <div id="fLogin">
+        <div class="tag">Área do Assinante</div>
+        <h1>Bem-vindo de volta</h1>
+        <div class="assinatura-status"><i></i> Assinatura ativa</div>
+        <label class="lab">Nome de usuário</label>
+        <input type="text" id="lu" placeholder="o usuário que você criou" autocomplete="username">
+        <div class="dica">O mesmo apelido que você escolheu ao criar o acesso.</div>
+        <label class="lab">Senha</label>
+        <div class="senha-box">
+          <input type="password" id="ls" placeholder="sua senha" autocomplete="current-password">
+          <button type="button" class="olho" data-alvo="ls" onclick="verSenha(this)" aria-label="Mostrar senha">👁</button>
+        </div>
+        <button class="btn-ouro" onclick="entrar()">Acessar minha área</button>
+        <div class="troca">Ainda não tem login? <b onclick="verCad()">Criar meu acesso</b></div>
+        <div class="msg" id="mLogin"></div>
+      </div>
+      <div id="fCad" class="oculto">
+        <div class="tag">Primeiro acesso</div>
+        <h1>Criar meu acesso</h1>
+        <p style="font-size:13.5px;color:var(--txt2);margin:8px 0 4px">É você quem cria seu login e sua senha agora. Guarde bem: são eles que abrirão sua área toda vez.</p>
+        <div class="passos-cad">
+          <div><span>1</span> Crie um <b>nome de usuário</b> — o apelido com que você entra.</div>
+          <div><span>2</span> Crie uma <b>senha</b> só sua e <b>repita</b> para confirmar.</div>
+          <div><span>3</span> Toque em <b>Criar acesso</b> — sua área abre na hora.</div>
+        </div>
+
+        <label class="lab">Nome de usuário</label>
+        <input type="text" id="cu" placeholder="ex.: maria.souza" autocomplete="username">
+        <div class="dica">Letras minúsculas, sem espaços. Pode ter ponto ou números. É o que você digita para entrar.</div>
+
+        <label class="lab">Senha</label>
+        <div class="senha-box">
+          <input type="password" id="cs" placeholder="crie uma senha (mín. 4)" autocomplete="new-password">
+          <button type="button" class="olho" data-alvo="cs" onclick="verSenha(this)" aria-label="Mostrar senha">👁</button>
+        </div>
+        <div class="dica">Algo que você lembre. Não use a senha do seu banco ou e-mail.</div>
+
+        <label class="lab">Repita a senha</label>
+        <div class="senha-box">
+          <input type="password" id="cs2" placeholder="digite a mesma senha de novo" autocomplete="new-password">
+          <button type="button" class="olho" data-alvo="cs2" onclick="verSenha(this)" aria-label="Mostrar senha">👁</button>
+        </div>
+        <div class="dica">As duas precisam ser iguais — é só para garantir que não houve engano.</div>
+
+        <button class="btn-ouro" onclick="cadastrar()">Criar acesso</button>
+        <div class="troca">Já criei antes <b onclick="verLogin()">Entrar na minha área</b></div>
+        <div class="msg" id="mCad"></div>
+      </div>
+      <div class="aviso-senha" style="margin-top:20px;font-size:12.5px">
+        <b>Sua senha é pessoal e intransferível.</b> Nunca divida com ninguém — o acesso é individual.
+      </div>
+      <div class="nota">
+        <b style="color:var(--txt2)">Como funciona o acesso:</b> nesta demonstração, o login roda no seu
+        navegador (senha cifrada em SHA-256). No ambiente de venda, o acesso é liberado pela plataforma
+        de assinatura — <b style="color:var(--txt2)">com a mensalidade ativa a área abre; ao cancelar, é encerrado.</b>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="app" class="oculto">
+  <div class="faixa"><b>Não é promessa de prêmio.</b> Toda combinação de 15 dezenas tem a mesma chance: 1 em 3.268.760. Aqui você organiza cobertura e disciplina — não previsão. Jogue com responsabilidade · +18.</div>
+  <div class="wrap">
+    <header class="top">
+      <div class="wordmark">Matriz <span style="background:linear-gradient(120deg,var(--ouro),var(--ouro-f));-webkit-background-clip:text;background-clip:text;color:transparent">Ouro</span></div>
+      <div class="right"><span class="assinatura-status" style="margin:0"><i></i> Ativa</span><span>Olá, <b id="nu" style="color:var(--txt)"></b></span><button class="btn-sair" onclick="sair()">Sair</button></div>
+    </header>
+
+    <nav class="abas" id="abas">
+      <button class="on" data-p="inicio">Início</button>
+      <button data-p="gerar">Minha Matriz</button>
+      <button data-p="cobertura">Cobertura Real</button>
+      <button data-p="freq">Frequência 500</button>
+      <button data-p="espelho">Estratégia Prisma</button>
+      <button data-p="estudos">Entenda os Estudos</button>
+      <button data-p="planos">Planos & Valores</button>
+      <button data-p="boloes">Bolões</button>
+      <button data-p="denuncia">Denúncia</button>
+      <button data-p="afiliado">Seja Afiliado</button>
+      <button data-p="favs">Meus Jogos</button>
+      <button data-p="verdade">A Verdade do Jogo</button>
+    </nav>
+
+    <!-- INÍCIO -->
+    <section class="pg" data-p="inicio">
+      <div class="card glow">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">Sua área de engenharia combinatória</div>
+            <h1>Monte a <span class="g">sua matriz</span>, com o rigor dos mestres.</h1>
+            <p>Você não recebe uma lista pronta e fixa. Você gera, a cada concurso, uma matriz nova filtrada pelo Padrão Ouro — e entende cada decisão por trás dela. Comece pela aba <b style="color:var(--txt)">Minha Matriz</b>.</p>
+            <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap">
+              <button class="btn-acao" onclick="irP('gerar')">Gerar minha matriz</button>
+              <button class="btn-sec" onclick="irP('estudos')">Ver os estudos</button>
+            </div>
+          </div>
+          <div>
+            <div class="volante" id="heroVol"></div>
+            <p style="text-align:center;font-size:12px;color:var(--txt3);margin-top:12px;max-width:300px;margin-left:auto;margin-right:auto;line-height:1.5">
+              <b style="color:var(--txt2)">Apenas ilustração das cores do volante</b> (dourado = moldura, azul = miolo). <b style="color:var(--ouro)">Não é uma sugestão de jogo.</b> Para gerar sua matriz, use a aba "Minha Matriz".
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.07),var(--painel))">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <div><div class="eyebrow">Último resultado oficial</div><h3 style="font-size:19px" id="ultTitulo"></h3></div>
+          <div class="dz-row" id="ultDezenas" style="flex:0"></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--txt3);margin-top:10px">Sua matriz é gerada <b style="color:var(--txt2)">para o próximo concurso</b>, depois deste resultado. É o princípio "o que vale hoje não vale amanhã": a cada concurso, jogos novos.</p>
+      </div>
+      <div class="grid3">
+        <div class="metrica"><div class="v">10,6%</div><div class="l">1 jogo isolado fazer 11+ (~1 em 9) — matemática exata</div></div>
+        <div class="metrica"><div class="v">~75%</div><div class="l">10 jogos 10/10 diversificados fazerem 11+ (cobertura exata de referência)</div></div>
+        <div class="metrica"><div class="v">~99%</div><div class="l">40 jogos 10/10 fazerem 11+ (cobertura exata de referência)</div></div>
+      </div>
+      <p style="font-size:12.5px;color:var(--txt3);margin-top:-8px;margin-bottom:8px">Valores de referência medidos por enumeração exata dos 3.268.760 sorteios. A cobertura da <b>sua</b> matriz é calculada ao vivo na aba "Cobertura Real". Mais cenários cobertos ≠ mais chance por jogo.</p>
+    </section>
+
+    <!-- GERAR -->
+    <section class="pg oculto" data-p="gerar">
+      <div class="head"><div class="eyebrow">Passo principal</div><h2>Minha Matriz</h2>
+        <p>Cada jogo abaixo passa pelos 6 filtros do Padrão Ouro antes de aparecer. O controle de sobreposição espalha os jogos entre si (engenharia de matrizes). Gere quantas quiser — nada aqui é fixo.</p></div>
+      <div class="card">
+        <div class="dica-aposta" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.07),transparent);margin-top:0;margin-bottom:16px"><span class="ic">🏆</span><div><b style="color:var(--ouro)">Com apoio dos mestres:</b> cada jogo nasce obedecendo aos <b>6 filtros do Padrão Ouro</b>, consagrados por anos de estudo estatístico de loterias — essa é a "base" do método. Os jogos são gerados <b>novos para o próximo concurso</b>, após o último resultado. A frequência passada é só contexto (aba "Frequência 500"); ela descreve o histórico e não prevê o sorteio.</div></div>
+        <div class="controles">
+          <div class="ctrl"><label>Concurso que vou jogar</label><input type="text" id="concurso" placeholder="ex.: 3776"><div class="hint">Preenchido com o próximo concurso após o último resultado.</div></div>
+          <div class="ctrl"><label>Quantos jogos</label><input type="number" id="qtd" value="10" min="1" max="30"><div class="hint">Cada jogo de 15 dezenas.</div></div>
+          <div class="ctrl"><label>Sobreposição máxima</label><input type="number" id="mov" value="9" min="7" max="13"><div class="hint">Menor = jogos mais diferentes entre si.</div></div>
+          <button class="btn-acao" onclick="gerar()">Gerar matriz 10/10</button>
+        </div>
+        <div class="explica-cor" style="margin-top:18px">
+          <div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Números dourados = Moldura</b> (a borda do volante: as 16 dezenas das pontas e laterais). O Padrão Ouro pede 10 dourados em cada jogo.</span></div>
+          <div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Números azuis = Miolo</b> (o centro do volante: 07,08,09,12,13,14,17,18,19). O Padrão Ouro pede 5 azuis em cada jogo. É por isso que as cores se misturam: todo jogo tem 10 dourados + 5 azuis.</span></div>
+        </div>
+        <div id="saida"></div>
+        <div class="dica-aposta"><span class="ic">🎟️</span><div><b>Falta o passo mais importante:</b> registrar a aposta! Este sistema é só um <b>auxílio de estudo</b> — ele não faz a aposta por você. Anote seus números e jogue numa <b>casa lotérica</b> ou pelo <b>site/app oficial Loterias Caixa</b>. De nada adianta montar a matriz aqui e não colocar em prática na Caixa.</div></div>
+      </div>
+    </section>
+
+    <!-- COBERTURA -->
+    <section class="pg oculto" data-p="cobertura">
+      <div class="head"><div class="eyebrow">Prova de método</div><h2>Cobertura Real</h2>
+        <p>Aqui não tem estimativa nem achismo. O sistema percorre <b style="color:var(--txt)">os 3.268.760 sorteios possíveis</b> da Lotofácil e conta em quantos a sua matriz alcançaria 11, 12 ou 13 acertos. É a mesma disciplina de auditoria por enumeração exata usada por quem leva o assunto a sério.</p></div>
+      <div class="card">
+        <p style="color:var(--txt2);font-size:14px">Gere sua matriz na aba anterior e calcule a cobertura verdadeira dela.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+          <button class="btn-acao" onclick="cobertura()">Calcular cobertura exata</button>
+          <button class="btn-sec" onclick="irP('gerar')">Ir gerar a matriz</button>
+        </div>
+        <div class="prog oculto" id="progW"><i id="progB"></i></div>
+        <div id="saidaCob"></div>
+      </div>
+    </section>
+
+    <!-- ESTUDOS -->
+    <section class="pg oculto" data-p="estudos">
+      <div class="head"><div class="eyebrow">Conhecimento que fica com você</div><h2>Entenda os Estudos</h2>
+        <p>O valor daqui não é um número da sorte — é o método, construído sobre muito estudo estatístico. Abaixo, o que cada linha de estudo traz e como vira um filtro real na sua matriz. Em linguagem simples, sem mistério.</p></div>
+
+      <div class="card">
+        <h3 style="font-size:18px;margin-bottom:6px">Os 6 filtros do Padrão Ouro <span style="font-size:13px;color:var(--txt3);font-weight:400">— fundamentados em muito estudo estatístico</span></h3>
+        <p style="color:var(--txt2);font-size:14px;margin-bottom:8px">Cada jogo que a sua matriz gera obedece a estes seis critérios, fruto de muito estudo estatístico. Eles miram a "forma" dos resultados mais comuns — sem nunca alterar a probabilidade de nenhum jogo.</p>
+        <div class="filtro-item"><div class="fic">10·5</div><div><h4>Moldura × Miolo</h4><p>10 dezenas na borda do volante e 5 no centro. Espalha o jogo pelo cartão em vez de amontoar numa região só.</p><div class="faixa-tag">Alvo: exatamente 10 na moldura / 5 no miolo</div></div></div>
+        <div class="filtro-item"><div class="fic">P</div><div><h4>Primos</h4><p>Quantidade de números primos (2,3,5,7,11,13,17,19,23) numa faixa equilibrada — nem de menos, nem demais.</p><div class="faixa-tag">Alvo: 5 a 6 primos</div></div></div>
+        <div class="filtro-item"><div class="fic">Í/P</div><div><h4>Ímpares × Pares</h4><p>Equilíbrio entre números ímpares e pares. Resultados muito desbalanceados são raros.</p><div class="faixa-tag">Alvo: 8Í/7P ou 7Í/8P</div></div></div>
+        <div class="filtro-item"><div class="fic">Σ</div><div><h4>Soma (Curva de Gauss)</h4><p>A soma das 15 dezenas cai numa faixa central. Somas extremas (muito baixas ou altas) quase não acontecem — é a lógica da curva de Gauss.</p><div class="faixa-tag">Alvo: 180 a 210 (ideal 185–205)</div></div></div>
+        <div class="filtro-item"><div class="fic">×3</div><div><h4>Múltiplos de 3</h4><p>Controla quantos múltiplos de 3 entram, mantendo a distribuição saudável.</p><div class="faixa-tag">Alvo: 4 a 6</div></div></div>
+        <div class="filtro-item"><div class="fic">Fib</div><div><h4>Fibonacci</h4><p>Presença de números da sequência de Fibonacci — usado como refinamento/desempate, não como corte rígido.</p><div class="faixa-tag">Referência: 3 a 5 (secundário)</div></div></div>
+      </div>
+
+      <div class="grid2">
+        <div class="estudo"><div class="n">Estudo 01</div><h3>Filtros Estáticos &amp; Curva de Gauss</h3><div class="esp">Base do Padrão Ouro</div><p>A base de tudo acima. Define a "forma" de um jogo bem distribuído e ensina a mirar a faixa central onde caem a maioria dos resultados, evitando extremos raros.</p></div>
+        <div class="estudo"><div class="n">Estudo 02</div><h3>Engenharia de Matrizes</h3><div class="esp">Redução de sobreposição</div><p>Cuida do conjunto, não do jogo isolado. De nada adianta 10 cartões ótimos se forem quase iguais. É ele por trás do controle de sobreposição, que força seus jogos a se espalharem.</p></div>
+        <div class="estudo"><div class="n">Estudo 03</div><h3>Geometria do Volante</h3><div class="esp">Linhas, colunas e distribuição</div><p>Enxerga o volante como um mapa 5×5. Observa se as dezenas ficam bem distribuídas por linhas e colunas — é o desenho colorido que aparece em cada matriz gerada.</p></div>
+        <div class="estudo"><div class="n">Estudo 04</div><h3>Cercamento &amp; Gestão de Banca</h3><div class="esp">Cobertura e disciplina financeira</div><p>A parte prática e a mais importante do ponto de vista financeiro: cobrir as 25 dezenas sem exagero e, acima de tudo, jogar com orçamento fixo e cabeça fria.</p></div>
+      </div>
+    </section>
+
+
+
+    <!-- DENÚNCIA -->
+    <section class="pg oculto" data-p="denuncia">
+      <div class="head"><div class="eyebrow">Canal de integridade</div><h2>Denúncia de promessa indevida</h2>
+        <p>A nossa metodologia é <b style="color:var(--txt)">estudo estatístico e cobertura — nunca promessa de prêmio</b>. Se algum afiliado, revendedor ou divulgador prometeu a você ganho garantido, lucro certo ou qualquer "número certeiro", saiba: <b style="color:var(--ouro)">isso NÃO faz parte do nosso projeto e vai contra tudo o que ensinamos.</b></p></div>
+
+      <div class="card verdade">
+        <h3 style="font-size:18px">Quem promete ganho não está usando a nossa metodologia</h3>
+        <p style="color:var(--txt2);font-size:14.5px;margin-top:8px">Nenhuma pessoa autorizada por nós pode prometer resultado. Toda combinação tem a mesma probabilidade (1 em 3.268.760), e nós dizemos isso em cada tela. Quem afirma o contrário está agindo <b style="color:var(--txt)">por conta própria</b>, por fora do projeto — e deve ser denunciado. Ao recebermos a denúncia, apuramos e, se confirmado, o afiliado é <b style="color:var(--txt)">descredenciado</b>.</p>
+      </div>
+
+      <div class="card form-bolao" style="max-width:560px">
+        <h3 style="font-size:16px;margin-bottom:4px">Registrar uma denúncia</h3>
+        <p style="font-size:13px;color:var(--txt2);margin-bottom:4px">Ao enviar, abre o WhatsApp oficial com os dados preenchidos, para nossa equipe apurar.</p>
+        <label class="lab">Nome do afiliado / divulgador denunciado</label>
+        <input type="text" id="dAfiliado" placeholder="Nome, @perfil ou telefone de quem prometeu">
+        <label class="lab">O que foi prometido (com suas palavras)</label>
+        <input type="text" id="dPromessa" placeholder="Ex.: disse que eu ia ganhar garantido / lucro certo">
+        <label class="lab">Onde aconteceu (opcional)</label>
+        <input type="text" id="dOnde" placeholder="Ex.: WhatsApp, Instagram, grupo, anúncio...">
+        <label class="lab">Seu nome (opcional)</label>
+        <input type="text" id="dNome" placeholder="Pode denunciar sem se identificar">
+        <button class="btn-acao" style="margin-top:18px" onclick="enviarDenuncia()">Enviar denúncia pelo WhatsApp</button>
+        <div class="msg" id="mDenuncia"></div>
+        <p style="font-size:11.5px;color:var(--txt3);margin-top:14px">Sua denúncia nos ajuda a manter o projeto honesto. Não toleramos promessas de prêmio.</p>
+      </div>
+    </section>
+
+
+    <!-- SEJA AFILIADO -->
+    <section class="pg oculto" data-p="afiliado">
+      <div class="head"><div class="eyebrow">Programa de afiliados</div><h2>Seja Afiliado</h2>
+        <p>Quer divulgar o Matriz Ouro e ganhar comissão? Leia as regras, aceite e assine na tela — <b style="color:var(--txt)">sem baixar nada</b>.</p></div>
+
+      <div class="card" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.07),var(--painel))">
+        <h3 style="font-size:17px;margin-bottom:10px">💰 Como você é remunerado</h3>
+        <div class="filtro-item"><div class="fic" style="color:var(--verde);border-color:var(--verde);font-size:12px">R$77</div><div><h4>Comissão na adesão — R$ 77</h4><p>Para cada novo assinante que você trouxer, você recebe <b style="color:var(--txt)">R$ 77</b> sobre a taxa de adesão de R$ 147 (pagamento único da entrada).</p></div></div>
+        <div class="filtro-item"><div class="fic" style="color:var(--verde);border-color:var(--verde);font-size:13px">R$7</div><div><h4>Comissão recorrente — R$ 7/mês</h4><p>E mais: <b style="color:var(--txt)">R$ 7 por mês</b> enquanto o assinante que você trouxe continuar pagando a mensalidade. Ganho que se repete todo mês, sem trabalho novo.</p></div></div>
+        <div style="background:rgba(40,209,124,.08);border:1px solid rgba(40,209,124,.28);border-radius:12px;padding:14px 16px;margin-top:12px;font-size:13.5px;color:var(--txt2)">Exemplo: traga <b style="color:var(--txt)">20 assinantes</b> que ficam → <b style="color:var(--verde)">R$ 1.540 na entrada</b> + <b style="color:var(--verde)">R$ 140 por mês</b> enquanto eles mantiverem a assinatura.</div>
+        <p style="font-size:12.5px;color:var(--txt3);margin-top:8px">Os pagamentos são processados pela plataforma de checkout (ex.: Hubla), que repassa sua comissão automaticamente.</p>
+      </div>
+
+      <div class="card glow">
+        <div class="eyebrow" style="margin-bottom:8px">Simule o seu ganho</div>
+        <h3 style="font-size:19px;margin-bottom:4px">Quanto mais você indica, mais sua renda cresce 🚀</h3>
+        <p style="font-size:13.5px;color:var(--txt2);margin-bottom:16px">Você ganha <b style="color:var(--txt)">R$ 77</b> na entrada de cada assinante <b>+ R$ 7 todos os meses</b> enquanto ele ficar. Veja o poder do acumulado:</p>
+        <table class="tabela-val">
+          <tr><th>Você indica</th><th>Ganho na entrada</th><th>Renda mensal recorrente</th><th>Em 6 meses*</th></tr>
+          <tr><td><b>5 pessoas</b></td><td class="mono">R$ 385</td><td class="mono">R$ 35/mês</td><td class="mono">R$ 595</td></tr>
+          <tr><td><b>10 pessoas</b></td><td class="mono">R$ 770</td><td class="mono">R$ 70/mês</td><td class="mono">R$ 1.190</td></tr>
+          <tr><td><b>20 pessoas</b></td><td class="mono">R$ 1.540</td><td class="mono">R$ 140/mês</td><td class="mono">R$ 2.380</td></tr>
+          <tr><td><b>50 pessoas</b></td><td class="mono">R$ 3.850</td><td class="mono">R$ 350/mês</td><td class="mono">R$ 5.950</td></tr>
+          <tr><td><b>100 pessoas</b></td><td class="mono" style="color:var(--verde)">R$ 7.700</td><td class="mono" style="color:var(--verde)">R$ 700/mês</td><td class="mono" style="color:var(--verde)">R$ 11.900</td></tr>
+        </table>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px">
+          <div class="metrica"><div class="v">1×</div><div class="l">Você trabalha uma vez para indicar…</div></div>
+          <div class="metrica"><div class="v">∞</div><div class="l">…e recebe todo mês enquanto o assinante ficar</div></div>
+          <div class="metrica"><div class="v">R$ 0</div><div class="l">de investimento para ser afiliado</div></div>
+        </div>
+        <p style="font-size:11.5px;color:var(--txt3);margin-top:14px">*Estimativa somando a entrada + 6 mensalidades, <b>considerando que os assinantes permaneçam ativos</b>. A renda recorrente só existe enquanto o assinante mantém a assinatura — seu trabalho é indicar e ajudar a manter. Não é ganho garantido: depende de quantas pessoas você trouxer e da permanência delas.</p>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:10px">Termo de conduta do afiliado</h3>
+        <div class="termo-box">
+          <h4>1. O que é permitido</h4>
+          Divulgar o Matriz Ouro como <b>estudo estatístico e organização de jogos</b>, usando os textos do kit oficial de divulgação.
+          <h4>2. O que é PROIBIDO</h4>
+          É terminantemente proibido <b>prometer ganho, lucro, resultado ou "número certeiro"</b>. Nenhum afiliado pode dar a entender que a pessoa vai ganhar. Toda combinação tem a mesma probabilidade (1 em 3.268.760).
+          <h4>3. Consequências</h4>
+          Quem prometer resultado é <b>descredenciado imediatamente</b> e <b>responde pessoalmente</b> por qualquer afirmação feita fora destas regras. O projeto não se responsabiliza por promessas feitas por afiliados por conta própria.
+          <h4>4. Comissão</h4>
+          O afiliado recebe <b>R$ 77 sobre a taxa de adesão de R$ 147</b> (pagamento único) de cada novo assinante que trouxer, e mais <b>R$ 7 por mês</b> enquanto esse assinante mantiver a mensalidade ativa. Os pagamentos são processados pela plataforma de checkout.
+          <h4>5. Transparência</h4>
+          O afiliado se compromete a sempre incluir o aviso: "estudo e cobertura, não promessa de prêmio. Jogue com responsabilidade. +18".
+        </div>
+
+        <div class="form-bolao" style="max-width:560px">
+          <label class="check" style="margin-top:18px"><input type="checkbox" id="afAceito"><span>Li e <b style="color:var(--txt)">concordo</b> com o termo de conduta acima. Comprometo-me a nunca prometer ganho e entendo que respondo pessoalmente por qualquer afirmação fora destas regras.</span></label>
+
+          <label class="lab">Nome completo</label>
+          <input type="text" id="afNome" placeholder="Seu nome completo">
+          <label class="lab">CPF</label>
+          <input type="text" id="afCpf" placeholder="000.000.000-00">
+
+          <label class="lab">Assine abaixo com o dedo</label>
+          <div class="sig-wrap">
+            <canvas id="sigCanvas" class="sig-canvas"></canvas>
+            <div class="sig-actions">
+              <button class="btn-sec" style="padding:9px 14px;font-size:13px" onclick="limparAssinatura()">Limpar assinatura</button>
+            </div>
+          </div>
+
+          <button class="btn-acao" style="margin-top:18px" onclick="enviarAfiliado()">Aceitar e assinar</button>
+          <div class="msg" id="mAfiliado"></div>
+          <p style="font-size:11.5px;color:var(--txt3);margin-top:12px">Ao enviar, seu aceite (nome, CPF, data e assinatura) é registrado e enviado à equipe pelo WhatsApp. Este é um aceite simples de conduta.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEUS JOGOS -->
+    <section class="pg oculto" data-p="favs">
+      <div class="head"><div class="eyebrow">Sua coleção pessoal</div><h2>Meus Jogos</h2>
+        <p>Salve aqui seus melhores jogos para não perder. <b style="color:var(--txt)">Lembrete importante:</b> cada jogo salvo foi pensado para um concurso específico. A base é sempre o <b style="color:var(--txt)">último concurso sorteado</b> — então, num novo concurso, gere jogos novos em vez de repetir os antigos. Guardar serve para consultar e comparar.</p></div>
+      <div class="card">
+        <div id="saidaFavs"></div>
+      </div>
+    </section>
+
+    <!-- VERDADE -->
+    <section class="pg oculto" data-p="verdade">
+      <div class="head"><div class="eyebrow">Transparência total</div><h2>A Verdade do Jogo</h2>
+        <p>Esta é a parte que nos diferencia de quem promete milagre. Leia com atenção — é o que protege o seu dinheiro e a sua confiança.</p></div>
+
+      <div class="card verdade">
+        <h3 style="font-size:19px">O que vale hoje não vale amanhã</h3>
+        <p style="color:var(--txt2);font-size:14.5px;margin-top:8px">Cada sorteio é <b style="color:var(--txt)">independente</b>. Um número "quente" pode esfriar no concurso seguinte, e não existe número "atrasado" que precise sair. O passado não obriga o futuro a nada. Por isso não vendemos uma lista mágica fixa: montamos <b style="color:var(--txt)">cobertura disciplinada, nova a cada concurso</b>. A matriz de hoje serve para hoje.</p>
+        <div class="destaque">Toda combinação de 15 dezenas — a mais "bonita" e a mais "feia" — tem exatamente a mesma probabilidade: <b>1 em 3.268.760</b>. Nenhum filtro muda isso. Os estudos organizam a sua banca; não preveem o resultado.</div>
+        <h3 style="font-size:17px;color:var(--verde);margin-top:22px">Então, qual é o valor real disto aqui?</h3>
+        <p style="color:var(--txt2);font-size:14.5px;margin-top:8px">O que a matemática realmente permite: apostar com <b style="color:var(--txt)">método</b> em vez de palpite, cobrir mais cenários com o mesmo orçamento, evitar jogos repetidos e ter <b style="color:var(--txt)">disciplina de banca</b>. É engenharia de cobertura — e o conhecimento dos estudos, que fica com você para sempre.</p>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:17px;margin-bottom:18px">Como usar com consciência</h3>
+        <div class="passo"><div class="pn">1</div><div><h4>Defina um orçamento fixo</h4><p>Aposte apenas o que você pode perder, sem comprometer nada essencial. Esse limite vem antes de qualquer jogo.</p></div></div>
+        <div class="passo"><div class="pn">2</div><div><h4>Gere a matriz do concurso</h4><p>A cada concurso, uma matriz nova e filtrada. Nada de repetir cegamente a de ontem — cada sorteio é um novo começo.</p></div></div>
+        <div class="passo"><div class="pn">3</div><div><h4>Encare os resultados com verdade</h4><p>Vai haver concursos sem retorno — é a natureza do jogo, não uma falha. Consistência de método vale mais que a emoção de uma semana.</p></div></div>
+      </div>
+
+      <div class="resp"><b>Jogo responsável.</b> Nunca aposte para "recuperar" perdas. Se o jogo deixar de ser diversão, procure ajuda. Proibido para menores de 18 anos.</div>
+    </section>
+
+
+    <!-- FREQUÊNCIA 500 -->
+    <section class="pg oculto" data-p="freq">
+      <div class="head"><div class="eyebrow">Dados reais · fonte pública</div><h2>Frequência nos últimos 500 concursos</h2>
+        <p>Quantas vezes cada dezena saiu de verdade nos <b style="color:var(--txt)">500 concursos mais recentes da base (nº 2747 a 3246)</b>. É um retrato do passado — <b style="color:var(--txt)">não</b> uma previsão. Cada sorteio continua independente.</p></div>
+      <div class="card">
+        <div class="explica-cor">
+          <div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Dourado = Moldura.</b> São as 16 dezenas da <b>borda</b> do volante (linhas de cima e de baixo, e as laterais). O Padrão Ouro pede 10 delas em cada jogo.</span></div>
+          <div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Azul = Miolo.</b> São as 9 dezenas do <b>centro</b> do volante (07,08,09,12,13,14,17,18,19). O Padrão Ouro pede 5 delas em cada jogo.</span></div>
+        </div>
+        <div id="freqBanner" class="aviso-senha" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.09),transparent);color:var(--txt2);margin:6px 0 14px">
+          <b style="color:var(--ouro)">Atenção — base de exemplo desatualizada.</b> Os números abaixo são de uma base pública que vai até o concurso 3246. O último concurso oficial é o <b style="color:var(--txt)">3775 (30/08/2026)</b>. Para dados 100% reais e atuais, use o botão abaixo e importe o CSV/XLSX da sua planilha (atualizada pela Caixa).
+        </div>
+        <div id="blocoImport" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 4px;padding:14px;background:var(--grafite);border:1px dashed var(--linha);border-radius:12px">
+          <div style="flex:1;min-width:220px;font-size:13px;color:var(--txt2)">Quer usar <b style="color:var(--txt)">sua</b> planilha oficial? Baixe em CSV ou XLSX (Google Sheets ou site da Caixa) e importe aqui — a frequência é recalculada com os seus dados.</div>
+          <input type="file" id="csvFreq" accept=".csv,.xlsx,.xls" style="display:none" onchange="importarCSV(event)">
+          <button class="btn-sec" onclick="document.getElementById('csvFreq').click()">Importar CSV / XLSX da minha planilha</button>
+        </div>
+        <div id="avisoImport" class="oculto" style="font-size:12px;color:var(--txt3);margin:2px 0 8px">Este botão de importar é um <b style="color:var(--txt2)">plano B</b>: use apenas se a base ao vivo estiver fora do ar (quando o servidor que busca a Caixa, ou a própria Caixa, estiver indisponível). Normalmente o sistema faz tudo sozinho e você não precisa dele.</div>
+        <div id="freqStatus" style="font-size:12.5px;color:var(--verde);margin-bottom:8px"></div>
+        <p style="font-size:13px;color:var(--txt3);margin:10px 0 16px">Numa distribuição perfeitamente equilibrada, cada dezena sairia ~300 vezes (60%). As diferenças abaixo são flutuação estatística natural — não um "número premiado".</p>
+        <div id="barrasFreq"></div>
+        <p style="margin-top:16px;font-size:12.5px;color:var(--txt3)">Base pública de resultados (repositório aberto). Confira sempre os números oficiais no site da Caixa; <span id="janelaFim">esta janela vai até o concurso 3246.</span></p>
+      </div>
+    </section>
+
+    <!-- ESTRATÉGIA ESPELHO -->
+    <section class="pg oculto" data-p="espelho">
+      <div class="head"><div class="eyebrow">Estratégia EXTRA · fora dos filtros do Padrão Ouro</div><h2>Estratégia Prisma</h2>
+        <p>Esta é <b style="color:var(--ouro)">uma outra maneira de jogar</b> — e faço questão de deixar claro: ela <b>não faz parte</b> dos filtros estáticos do Padrão Ouro (os 6 critérios de estudo estatístico). É um caminho à parte, geométrico, para quem quer jogar mais com menos.</p>
+        <p style="color:var(--txt2);font-size:15px;margin-top:8px">A ideia é simples: <b style="color:var(--txt)">você gera só o primeiro jogo (o Jogo 1, base, 10/10) e o nosso sistema faz as 3 inversões automaticamente para você</b>. No fim, você tem <b style="color:var(--txt)">4 jogos</b> para apostar — o base + as 3 inversões — sempre com base no <b style="color:var(--txt)">último concurso sorteado</b>.</p></div>
+      <div class="card glow">
+        <p style="font-size:14px;color:var(--txt2)">Clique para gerar 1 jogo base 10/10 e ver as 3 inversões que o sistema monta a partir dele.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
+          <button class="btn-acao" onclick="rodarEspelho()">Gerar 1 jogo + 3 inversões</button>
+        </div>
+        <div class="explica-cor" style="margin-top:16px"><div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Dourado = Moldura</b> (borda do volante).</span></div><div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Azul = Miolo</b> (centro). O jogo base tem 10 dourados + 5 azuis; nas inversões as cores mudam de lugar.</span></div></div>
+        <div id="saidaEspelho"></div>
+        <div class="dica-aposta"><span class="ic">🎟️</span><div><b>Falta o passo mais importante:</b> registrar a aposta! Este sistema é só um <b>auxílio de estudo</b> — ele não faz a aposta por você. Anote seus números e jogue numa <b>casa lotérica</b> ou pelo <b>site/app oficial Loterias Caixa</b>. De nada adianta montar a matriz aqui e não colocar em prática na Caixa.</div></div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:8px">O que é cada inversão (o sistema faz sozinho)</h3>
+        <p style="font-size:13px;color:var(--txt3);margin-bottom:12px">Todas mantêm as colunas fixas e apenas reorganizam a ordem das 5 linhas do volante — cada dezena muda de linha, nunca de coluna.</p>
+        <div class="passo"><div class="pn">1</div><div><h4>Jogo 2 — 1ª Inversão · Reflexão Vertical (5-4-3-2-1)</h4><p>A ordem das linhas passa a ser 5ª, 4ª, 3ª, 2ª, 1ª (a linha do meio fica no lugar). Ex.: 01 vira 21.</p></div></div>
+        <div class="passo"><div class="pn">2</div><div><h4>Jogo 3 — 2ª Inversão · Troca Intermediária (4-2-5-1-3)</h4><p>As linhas são recolocadas na ordem 4ª, 2ª, 5ª, 1ª, 3ª, gerando um arranjo diferente. Ex.: 01 vira 16.</p></div></div>
+        <div class="passo"><div class="pn">3</div><div><h4>Jogo 4 — 3ª Inversão · Reagrupamento (3-1-5-2-4)</h4><p>As linhas são recolocadas na ordem 3ª, 1ª, 5ª, 2ª, 4ª, criando o terceiro arranjo. Ex.: 01 vira 06.</p></div></div>
+        <div class="aviso-senha" style="border-color:var(--linha);background:var(--grafite);color:var(--txt2);margin-top:6px">
+          <b style="color:var(--ouro)">Importante e honesto:</b> a Prisma é uma estratégia <b>extra e independente</b> — não substitui nem se mistura aos 6 filtros do Padrão Ouro. As inversões são <b>simetrias geométricas</b>: diversificam cenários com pouco dinheiro, mas <b>não</b> aumentam a chance de nenhum jogo (cada um continua 1 em 3.268.760). Por serem geométricas, as inversões <b>podem não passar</b> nos 6 filtros do Padrão Ouro — só o jogo base é garantido 10/10. Isso é da natureza da técnica.
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANOS & VALORES -->
+    <section class="pg oculto" data-p="planos">
+      <div class="head"><div class="eyebrow">Transparência de custos</div><h2>Planos & Valores</h2>
+        <p>Separamos duas coisas: o <b style="color:var(--txt)">custo das apostas</b> (o que você paga na Caixa) e o <b style="color:var(--txt)">acesso à área</b> (a assinatura). Sem letras miúdas.</p></div>
+
+      <div class="card">
+        <h3 style="font-size:17px;margin-bottom:6px">Combo Prisma — custo das apostas</h3>
+        <p style="font-size:13.5px;color:var(--txt2);margin-bottom:6px">O jogo base + as 3 inversões são 4 apostas de 15 dezenas. Ajuste o preço-base e a tabela recalcula.</p>
+        <div class="ctrl" style="max-width:220px;margin-bottom:6px"><label>Preço da aposta de 15 dezenas (R$)</label><input type="number" id="precoApos" value="3.50" step="0.50" oninput="montarVal()"></div>
+        <table class="tabela-val" id="tabVal"></table>
+        <p style="font-size:12px;color:var(--txt3);margin-top:10px">Confira o valor oficial no site da Caixa — os preços mudam. Este sistema não confirma o preço vigente por conta própria.</p>
+      </div>
+
+      <div class="grid2">
+        <div class="plano">
+          <div class="pt">Adesão (única)</div>
+          <div class="pv">R$ 147<small>,00 uma vez</small></div>
+          <ul><li>Acesso completo à Área do Assinante</li><li>Gerador Padrão Ouro 10/10 ilimitado</li><li>Cobertura exata e Estratégia Prisma</li><li>Todos os estudos explicados</li></ul>
+        </div>
+        <div class="plano destaque">
+          <div class="pt">Mensalidade</div>
+          <div class="pv">R$ 47<small>,00 / mês</small></div>
+          <ul><li>Mantém seu acesso ativo mês a mês</li><li>Atualizações da base de concursos</li><li>Cancelou, o acesso é encerrado</li><li>Sem fidelidade, sem pegadinha</li></ul>
+        </div>
+      </div>
+
+      <div class="aviso-senha" style="margin-top:6px">
+        <b>Sua senha é pessoal e intransferível.</b> Nunca divida com ninguém. O acesso é individual e vinculado à sua assinatura — compartilhar a senha pode encerrar seu acesso.
+      </div>
+      <div class="resp"><b>Não é promessa de prêmio.</b> A assinatura dá acesso a ferramentas de estudo e cobertura, não a ganhos garantidos. Toda combinação tem a mesma probabilidade. Jogue com responsabilidade · +18.</div>
+    </section>
+
+    <!-- BOLÕES -->
+    <section class="pg oculto" data-p="boloes">
+      <div class="head"><div class="eyebrow">Quero participar de um bolão</div><h2>Bolões</h2>
+        <p>Tem interesse em entrar num bolão? Deixe seus dados que a equipe AJ HUBNER entra em contato. Ao enviar, abre uma conversa no WhatsApp com suas informações já preenchidas.</p></div>
+      <div class="card form-bolao" style="max-width:520px">
+        <label class="lab">Nome completo</label>
+        <input type="text" id="bNome" placeholder="Seu nome completo">
+        <label class="lab">Telefone / WhatsApp (com DDD)</label>
+        <input type="text" id="bTel" placeholder="(11) 90000-0000">
+        <label class="check"><input type="checkbox" id="bLgpd"><span>Autorizo o contato da AJ HUBNER pelos dados informados, para tratar da minha participação em bolões. Meus dados não serão usados para outra finalidade.</span></label>
+        <button class="btn-acao" style="margin-top:18px" onclick="enviarBolao()">Quero participar — enviar pelo WhatsApp</button>
+        <div class="msg" id="mBolao"></div>
+        <p style="font-size:11.5px;color:var(--txt3);margin-top:14px">Participar de bolão é opcional e não garante prêmio. Jogue com responsabilidade · +18.</p>
+      </div>
+    </section>
+
+    <footer>
+      Matriz Ouro — engenharia combinatória e estudo estatístico. Não constitui promessa de premiação; toda combinação tem a mesma probabilidade.
+      <div class="credito-rod">Desenvolvido por <b>AJ HUBNER</b> — Agência Digital</div>
+    </footer>
+  </div>
+</div>
+
+<script>
+const MOLDURA=new Set([1,2,3,4,5,6,10,11,15,16,20,21,22,23,24,25]);
+const PRIMOS=new Set([2,3,5,7,11,13,17,19,23]);
+const MULT3=new Set([3,6,9,12,15,18,21,24]);
+const FIBO=new Set([1,2,3,5,8,13,21]);
+
+function analisar(dz){
+  const s=[...dz].sort((a,b)=>a-b);let mold=0,pri=0,imp=0,soma=0,m3=0,fib=0;
+  for(const n of s){if(MOLDURA.has(n))mold++;if(PRIMOS.has(n))pri++;if(n%2)imp++;soma+=n;if(MULT3.has(n))m3++;if(FIBO.has(n))fib++;}
+  const abs=(mold===10&&pri>=5&&pri<=6&&(imp===7||imp===8)&&soma>=185&&soma<=205&&m3>=4&&m3<=6&&fib>=3&&fib<=5);
+  return{dz:s,mold,miolo:15-mold,pri,imp,par:15-imp,soma,m3,fib,abs};
+}
+function jogoAleatorio(){const p=[];for(let i=1;i<=25;i++)p.push(i);for(let i=24;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]];}return p.slice(0,15);}
+function gerarUm(t=6000){for(let i=0;i<t;i++){const a=analisar(jogoAleatorio());if(a.abs)return a.dz;}return null;}
+function ov(a,b){const s=new Set(b);let c=0;for(const n of a)if(s.has(n))c++;return c;}
+let MATRIZ=[];
+
+function volHTML(dz,mini){const s=new Set(dz);let h='';for(let n=1;n<=25;n++){const mo=MOLDURA.has(n);h+=`<div class="cel ${mo?'':'mio'} ${s.has(n)?'on':''}">${String(n).padStart(2,'0')}</div>`;}return h;}
+function heroVol(){const g=gerarUm(6000)||[1,3,4,6,7,8,13,16,17,18,20,21,22,23,24];document.getElementById('heroVol').innerHTML=volHTML(g);}
+
+function gerar(){
+  const n=Math.max(1,Math.min(30,+document.getElementById('qtd').value||10));
+  const mo=Math.max(7,Math.min(13,+document.getElementById('mov').value||9));
+  const esc=[];let cap=mo,t=0,relaxou=false;
+  while(esc.length<n){
+    t++; const g=gerarUm(2500); if(!g){ if(t>200000)break; continue; }
+    if(esc.every(c=>ov(c,g)<=cap)){ esc.push(g); t=0; }
+    else if(t>12000){ cap++; t=0; relaxou=true; if(cap>15)break; }
+  }
+  MATRIZ=esc; window.MO_CAP=cap; window.MO_RELAX=relaxou; render();
+}
+function omedio(){if(MATRIZ.length<2)return 0;let s=0,p=0;for(let i=0;i<MATRIZ.length;i++)for(let j=i+1;j<MATRIZ.length;j++){s+=ov(MATRIZ[i],MATRIZ[j]);p++;}return s/p;}
+function render(){
+  const box=document.getElementById('saida');
+  if(!MATRIZ.length){box.innerHTML='<p style="color:var(--vermelho);margin-top:16px">Não consegui montar com essa sobreposição. Aumente o limite e tente de novo.</p>';return;}
+  const cc=document.getElementById('concurso').value.trim();
+  let h=`<div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+    <span class="selo">✓ ${MATRIZ.length} jogos Padrão Ouro 10/10</span>
+    ${cc?`<span style="font-size:13px;color:var(--txt2)">Concurso <b style="color:var(--ouro)">${cc}</b></span>`:''}
+    <span style="font-size:13px;color:var(--txt2)">Sobreposição média <b style="color:var(--ouro)">${omedio().toFixed(2)}</b></span></div>`;
+  if(window.MO_RELAX){h+=`<p style="font-size:12.5px;color:var(--txt3);margin-top:4px">Para completar os ${MATRIZ.length} jogos, a sobreposição máxima foi ajustada para ${window.MO_CAP} (os jogos 10/10 têm estrutura parecida, então às vezes é preciso permitir um pouco mais de repetição para fechar a quantidade).</p>`;}
+  MATRIZ.forEach((g,i)=>{const a=analisar(g);
+    h+=`<div class="jogo"><div class="idj">J${String(i+1).padStart(2,'0')}</div>
+      <div class="dz-row">${g.map(n=>`<span class="dz ${MOLDURA.has(n)?'mo':'mi'}">${String(n).padStart(2,'0')}</span>`).join('')}</div>
+      <div class="mini-metric">Σ${a.soma} · ${a.pri}P · ${a.imp}Í/${a.par}P · ×3:${a.m3}</div>
+      <button class="btn-sec" style="padding:8px 12px;font-size:12px" onclick="salvarFav([${g.join(',')}])">★ Salvar</button></div>`;});
+  box.innerHTML=h;
+}
+
+/* cobertura exata */
+function popcount(x){x=x-((x>>1)&0x55555555);x=(x&0x33333333)+((x>>2)&0x33333333);x=(x+(x>>4))&0x0f0f0f0f;return(x*0x01010101)>>24;}
+function mask(dz){let m=0;for(const n of dz)m|=(1<<(n-1));return m;}
+function cobertura(){
+  if(!MATRIZ.length){document.getElementById('saidaCob').innerHTML='<p style="color:var(--vermelho);margin-top:14px">Gere sua matriz primeiro na aba "Minha Matriz".</p>';return;}
+  const ms=MATRIZ.map(mask),TOTAL=3268760;let c11=0,c12=0,c13=0,feitos=0,x=(1<<15)-1;const LIM=1<<25;
+  const pw=document.getElementById('progW'),pb=document.getElementById('progB');pw.classList.remove('oculto');
+  document.getElementById('saidaCob').innerHTML='<p style="margin-top:14px;color:var(--txt2)">Percorrendo os 3.268.760 sorteios possíveis…</p>';
+  function chunk(){let n=0;while(x<LIM&&n<350000){let best=0;for(let k=0;k<ms.length;k++){const p=popcount(x&ms[k]);if(p>best)best=p;}if(best>=11){c11++;if(best>=12){c12++;if(best>=13)c13++;}}const c=x&(-x),r=x+c;x=(((r^x)>>>2)/c)|r;n++;feitos++;}
+    pb.style.width=(100*feitos/TOTAL).toFixed(1)+'%';
+    if(x<LIM)setTimeout(chunk,0);else fim(c11,c12,c13,TOTAL);}
+  setTimeout(chunk,0);
+}
+function fim(c11,c12,c13,T){
+  document.getElementById('progW').classList.add('oculto');
+  const pc=c=>(100*c/T).toFixed(4)+'%',um=c=>c?'1 em '+Math.round(T/c).toLocaleString('pt-BR'):'—';
+  const cont={};for(let i=1;i<=25;i++)cont[i]=0;MATRIZ.forEach(g=>g.forEach(n=>cont[n]++));
+  const aus=Object.values(cont).filter(v=>v===0).length,mx=Math.max(...Object.values(cont));
+  document.getElementById('saidaCob').innerHTML=`
+    <div class="metricas" style="margin-top:8px">
+      <div class="metrica"><div class="v">${pc(c11)}</div><div class="l">P ≥ 11 · ${um(c11)}</div></div>
+      <div class="metrica"><div class="v">${pc(c12)}</div><div class="l">P ≥ 12 · ${um(c12)}</div></div>
+      <div class="metrica"><div class="v">${pc(c13)}</div><div class="l">P ≥ 13 · ${um(c13)}</div></div>
+      <div class="metrica"><div class="v">${omedio().toFixed(2)}</div><div class="l">Sobreposição média</div></div>
+      <div class="metrica"><div class="v">${25-aus}/25</div><div class="l">Dezenas cobertas</div></div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;color:var(--txt2)">Medido por <b style="color:var(--ouro)">enumeração exata</b> dos 3.268.760 resultados — não é estimativa. Cobertura maior significa mais cenários alcançados com a sua banca; <b style="color:var(--txt)">não</b> significa maior chance por jogo. Cada sorteio continua sendo 1 em 3.268.760.</p>`;
+}
+
+
+/* ===== dados reais de frequência (últimos 500 concursos: 2747-3246) ===== */
+const FREQ500={"1":319,"2":313,"3":293,"4":310,"5":288,"6":297,"7":308,"8":298,"9":301,"10":318,"11":279,"12":316,"13":292,"14":291,"15":296,"16":270,"17":288,"18":304,"19":291,"20":331,"21":297,"22":299,"23":289,"24":290,"25":322};
+const WPP_AJ="5551993660503"; // AJ HUBNER - Aline Hübner
+
+/* ===== Estratégia Prisma (1 jogo + 3 inversões por reordenação de linhas) ===== */
+const PERMS=[[5,4,3,2,1],[4,2,5,1,3],[3,1,5,2,4]]; // novas ordens das 5 linhas do volante
+function inverter(base,perm){const map={};for(let nl=0;nl<5;nl++){const ol=perm[nl]-1;for(let c=0;c<5;c++){map[ol*5+c+1]=nl*5+c+1;}}return base.map(n=>map[n]).sort((a,b)=>a-b);}
+function cobLista4(gs){
+  const ms=gs.map(mask);let c11=0,c12=0,c13=0,x=(1<<15)-1;const LIM=1<<25,T=3268760;
+  while(x<LIM){let best=0;for(let k=0;k<ms.length;k++){const pcx=popcount(x&ms[k]);if(pcx>best)best=pcx;}
+    if(best>=11){c11++;if(best>=12){c12++;if(best>=13)c13++;}}
+    const c=x&(-x),r=x+c;x=(((r^x)>>>2)/c)|r;}
+  return {p11:100*c11/T,p12:100*c12/T,p13:100*c13/T};
+}
+function rodarEspelho(){
+  const base=gerarUm(6000);const box=document.getElementById('saidaEspelho');
+  if(!base){box.innerHTML='<p style="color:var(--vermelho);margin-top:14px">Tente de novo.</p>';return;}
+  const jogos=[["Jogo 1 — Base Original",base],["Jogo 2 — 1ª Inversão · Reflexão Vertical 5-4-3-2-1",inverter(base,PERMS[0])],["Jogo 3 — 2ª Inversão · Troca Intermediária 4-2-5-1-3",inverter(base,PERMS[1])],["Jogo 4 — 3ª Inversão · Reagrupamento 3-1-5-2-4",inverter(base,PERMS[2])]];
+  let html='<div style="margin-top:18px">';
+  jogos.forEach(([nome,g])=>{const a=analisar(g);
+    html+=`<div class="jogo"><div class="idj" style="min-width:100%;margin-bottom:4px">${nome}</div>
+      <div class="dz-row">${g.map(n=>`<span class="dz ${MOLDURA.has(n)?'mo':'mi'}">${String(n).padStart(2,'0')}</span>`).join('')}</div>
+      ${a.abs?'<span class="selo" style="font-size:11px;padding:5px 10px">10/10</span>':'<span class="selo-amb">inversão</span>'}<button class="btn-sec" style="padding:7px 11px;font-size:12px" onclick="salvarFav([${g.join(',')}])">★ Salvar</button></div>`;});
+  html+='</div><p style="margin-top:14px;color:var(--txt2)">Calculando cobertura exata das 4 apostas…</p>';
+  box.innerHTML=html;
+  setTimeout(()=>{const r=cobLista4(jogos.map(j=>j[1]));
+    box.innerHTML=html.replace('Calculando cobertura exata das 4 apostas…',
+      `Cobertura exata das 4 apostas (base + 3 inversões): <b style="color:var(--ouro)">P≥11 ${r.p11.toFixed(2)}%</b> · P≥12 ${r.p12.toFixed(2)}% · P≥13 ${r.p13.toFixed(3)}%. Lembre: são 4 cenários cobertos, não mais chance por jogo.`);
+  },50);
+}
+
+/* ===== Planos & Valores ===== */
+const COMBO=[["Jogo base",1],["1ª inversão",1],["2ª inversão",1],["3ª inversão",1]];
+function montarVal(){
+  const b=+document.getElementById('precoApos').value||3.5;
+  const fmt=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  let html='<tr><th>Aposta</th><th>Dezenas</th><th>Valor</th></tr>';let tot=0;
+  for(const [nome,q] of COMBO){tot+=b*q;html+=`<tr><td>${nome}</td><td>15</td><td class="mono">${fmt(b*q)}</td></tr>`;}
+  html+=`<tr><td colspan="2"><b>Total do Combo Prisma (4 apostas)</b></td><td class="mono">${fmt(tot)}</td></tr>`;
+  document.getElementById('tabVal').innerHTML=html;
+}
+
+/* ===== Bolão (lead via WhatsApp) ===== */
+function enviarDenuncia(){
+  const af=document.getElementById('dAfiliado').value.trim();
+  const pr=document.getElementById('dPromessa').value.trim();
+  const onde=document.getElementById('dOnde').value.trim();
+  const nome=document.getElementById('dNome').value.trim();
+  const m=document.getElementById('mDenuncia');
+  if(af.length<2){m.className='msg erro';m.textContent='Informe quem está sendo denunciado.';return;}
+  if(pr.length<3){m.className='msg erro';m.textContent='Descreva o que foi prometido.';return;}
+  const txt=encodeURIComponent(`DENUNCIA - promessa indevida\nAfiliado/divulgador: ${af}\nO que prometeu: ${pr}`+(onde?`\nOnde: ${onde}`:'')+(nome?`\nDenunciante: ${nome}`:'\nDenunciante: (anonimo)'));
+  m.className='msg ok';m.textContent='Abrindo o WhatsApp…';
+  window.open(`https://wa.me/${WPP_AJ}?text=${txt}`,'_blank');
+}
+function enviarBolao(){
+  const nome=document.getElementById('bNome').value.trim();
+  const tel=document.getElementById('bTel').value.trim();
+  const ok=document.getElementById('bLgpd').checked;const m=document.getElementById('mBolao');
+  if(nome.length<3){m.className='msg erro';m.textContent='Digite seu nome completo.';return;}
+  if(tel.replace(/\D/g,'').length<10){m.className='msg erro';m.textContent='Digite um telefone válido com DDD.';return;}
+  if(!ok){m.className='msg erro';m.textContent='Marque a autorização de contato para continuar.';return;}
+  const txt=encodeURIComponent(`Ola! Tenho interesse em participar de um bolao.\nNome: ${nome}\nTelefone/WhatsApp: ${tel}`);
+  m.className='msg ok';m.textContent='Abrindo o WhatsApp…';
+  window.open(`https://wa.me/${WPP_AJ}?text=${txt}`,'_blank');
+}
+
+
+/* ===== Frequência: render + importar CSV ===== */
+const API_BASE = "";   // vazio = mesmo servidor. Se o servidor estiver em outro endereço, coloque a URL aqui.
+let ULTIMO={n:3775, data:"30/08/2026", dz:[1,4,5,6,8,10,11,12,13,15,17,18,19,23,25]}; // fallback (exemplo) até o servidor responder
+let FREQ_ATUAL=FREQ500; let FREQ_INFO="base de EXEMPLO (concursos 2747–3246) — importe seu CSV atualizado";
+function renderFreq(freq,total,info){
+  const MOLD=new Set([1,2,3,4,5,6,10,11,15,16,20,21,22,23,24,25]);
+  const vals=[];for(let n=1;n<=25;n++)vals.push(freq[n]||0);
+  const mx=Math.max(...vals),mn=Math.min(...vals);
+  let h='';
+  for(let n=1;n<=25;n++){const fv=freq[n]||0;const cls=MOLD.has(n)?'mo':'mi';
+    const w=Math.round(100*(fv-mn+8)/((mx-mn+8)||1));
+    h+=`<div class="barra-row"><span class="bnum ${cls}">${String(n).padStart(2,'0')}</span><div class="barra-track"><div class="barra-fill ${cls}" style="width:${w}%"></div></div><span class="bval">${fv}x · ${total?(100*fv/total).toFixed(1):'0'}%</span></div>`;}
+  document.getElementById('barrasFreq').innerHTML=h;
+  const jf=document.getElementById('janelaFim');if(jf)jf.textContent='Fonte atual: '+info+'.';
+}
+function contarLinhas(linhas,lenient){
+  const freq={};for(let i=1;i<=25;i++)freq[i]=0;
+  let total=0, concs=[];
+  const dateRe=/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g;
+  for(const raw of linhas){
+    let ln=String(raw);
+    const hadDate=/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/.test(ln);
+    const semData=ln.replace(dateRe,' ');           // remove datas p/ não poluir dezenas
+    const nums=(semData.match(/\d+/g)||[]).map(Number);
+    const hasBig=nums.some(x=>x>25);                 // concurso costuma ser >25
+    const conc=nums.find(x=>x>=1000&&x<=9999); if(conc)concs.push(conc);
+    const dz=[...new Set(nums.filter(x=>x>=1&&x<=25))];
+    const linhaValida = dz.length>=15 && (lenient || hasBig || hadDate);
+    if(linhaValida){ dz.slice(0,15).forEach(n=>freq[n]++); total++; }
+  }
+  return {freq,total,concs};
+}
+function aplicarFreq(r){
+  const st=document.getElementById('freqStatus');
+  if(r.total===0){st.style.color='var(--vermelho)';st.textContent='Não encontrei linhas com 15 dezenas. Confira o arquivo (as dezenas de cada concurso devem estar na mesma linha).';return;}
+  const range=r.concs.length?` (concursos ${Math.min(...r.concs)}–${Math.max(...r.concs)})`:'';
+  FREQ_ATUAL=r.freq;FREQ_INFO=`sua planilha — ${r.total} concursos${range}`;
+  renderFreq(r.freq,r.total,FREQ_INFO);
+  st.style.color='var(--verde)';st.textContent=`✓ Importado: ${r.total} concursos da sua planilha${range}. Dados oficiais em uso.`;
+}
+function importarCSV(ev){
+  const f=ev.target.files[0];if(!f)return;
+  const nome=f.name.toLowerCase();
+  const ehExcel = nome.endsWith('.xlsx')||nome.endsWith('.xls');
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      let linhas;
+      if(ehExcel){
+        if(typeof XLSX==='undefined'){document.getElementById('freqStatus').style.color='var(--vermelho)';document.getElementById('freqStatus').textContent='Leitor de XLSX indisponível (sem internet). Salve a planilha como CSV e importe de novo.';return;}
+        const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+        const ws=wb.Sheets[wb.SheetNames[0]];
+        const rows=XLSX.utils.sheet_to_json(ws,{header:1});
+        linhas=rows.map(r=>Array.isArray(r)?r.join(','):String(r));
+      }else{
+        linhas=e.target.result.split(/\r?\n/);
+      }
+      linhas=linhas.filter(x=>String(x).trim());
+      let r=contarLinhas(linhas,false);
+      if(r.total===0) r=contarLinhas(linhas,true);
+      aplicarFreq(r);
+    }catch(err){document.getElementById('freqStatus').style.color='var(--vermelho)';document.getElementById('freqStatus').textContent='Erro ao ler o arquivo: '+err.message;}
+  };
+  if(ehExcel) reader.readAsArrayBuffer(f); else reader.readAsText(f,'UTF-8');
+}
+
+
+/* ===== Atualização automática (servidor Caixa) ===== */
+async function carregarReal(){
+  try{
+    const resp=await fetch((API_BASE||'')+'/api/lotofacil',{cache:'no-store'});
+    if(!resp.ok) throw new Error('sem servidor');
+    const data=await resp.json();
+    if(data.ultimo&&Array.isArray(data.ultimo.dezenas)){
+      ULTIMO={n:data.ultimo.numero,data:data.ultimo.data,dz:data.ultimo.dezenas};
+      renderUltimo();
+      const ci=document.getElementById('concurso'); if(ci) ci.value=(ULTIMO.n+1);
+    }
+    if(Array.isArray(data.concursos)&&data.concursos.length){
+      const freq={};for(let i=1;i<=25;i++)freq[i]=0;let tot=0,ns=[];
+      data.concursos.forEach(c=>{(c.dezenas||[]).forEach(n=>{if(n>=1&&n<=25)freq[n]++;});tot++;ns.push(c.numero);});
+      FREQ_ATUAL=freq;
+      renderFreq(freq,tot,`dados oficiais AO VIVO — ${tot} concursos (${Math.min(...ns)}–${Math.max(...ns)})`);
+      const b=document.getElementById('freqBanner');
+      if(b){b.style.borderColor='rgba(40,209,124,.4)';b.innerHTML='<b style="color:var(--verde)">✓ Base ao vivo:</b> último concurso e os '+tot+' anteriores estão sendo atualizados automaticamente pelo servidor oficial. Nenhuma ação manual necessária.';}
+      const bi=document.getElementById('blocoImport'); if(bi) bi.classList.add('oculto');   // servidor OK -> some o import
+      const ai=document.getElementById('avisoImport'); if(ai) ai.classList.add('oculto');
+    }
+  }catch(e){
+    /* servidor fora do ar → mostra o import manual como plano B, com aviso */
+    const bi=document.getElementById('blocoImport'); if(bi) bi.classList.remove('oculto');
+    const ai=document.getElementById('avisoImport'); if(ai) ai.classList.remove('oculto');
+  }
+}
+/* ===== Último concurso ===== */
+function renderUltimo(){
+  const t=document.getElementById('ultTitulo');if(t)t.textContent=`Concurso ${ULTIMO.n} — ${ULTIMO.data}`;
+  const d=document.getElementById('ultDezenas');
+  if(d)d.innerHTML=ULTIMO.dz.map(n=>`<span class="dz ${MOLDURA.has(n)?'mo':'mi'}">${String(n).padStart(2,'0')}</span>`).join('');
+}
+/* ===== Meus Jogos (favoritos) ===== */
+function lerFavs(){try{return JSON.parse(localStorage.getItem('mo_favs_'+USUARIO)||'[]');}catch(e){return [];}}
+function salvarFavs(a){try{localStorage.setItem('mo_favs_'+USUARIO,JSON.stringify(a));}catch(e){}}
+function salvarFav(dz){
+  const conc=(document.getElementById('concurso')&&document.getElementById('concurso').value.trim())||(ULTIMO.n+1);
+  const favs=lerFavs();
+  favs.unshift({dz:[...dz].sort((a,b)=>a-b),conc:conc,data:new Date().toLocaleDateString('pt-BR')});
+  salvarFavs(favs);toast('★ Jogo salvo em "Meus Jogos"!');renderFavs();
+}
+function removerFav(i){const f=lerFavs();f.splice(i,1);salvarFavs(f);renderFavs();}
+function renderFavs(){
+  const box=document.getElementById('saidaFavs');if(!box)return;
+  const f=lerFavs();
+  if(!f.length){box.innerHTML='<p style="color:var(--txt2);margin-top:14px">Você ainda não salvou nenhum jogo. Gere na aba "Minha Matriz" ou "Estratégia Prisma" e toque em <b style="color:var(--ouro)">★ Salvar</b>.</p>';return;}
+  let h='';
+  f.forEach((j,i)=>{h+=`<div class="jogo"><div class="idj" style="min-width:auto">★</div>
+    <div class="dz-row">${j.dz.map(n=>`<span class="dz ${MOLDURA.has(n)?'mo':'mi'}">${String(n).padStart(2,'0')}</span>`).join('')}</div>
+    <div class="mini-metric">Concurso ${j.conc} · salvo ${j.data}</div>
+    <button class="btn-sair" onclick="removerFav(${i})">remover</button></div>`;});
+  box.innerHTML=h;
+}
+function toast(msg){let t=document.getElementById('mo_toast');if(!t){t=document.createElement('div');t.id='mo_toast';t.style.cssText='position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--grafite3);color:var(--txt);border:1px solid var(--ouro-esc);padding:12px 20px;border-radius:12px;font-size:14px;z-index:999;box-shadow:var(--sombra);transition:.3s;opacity:0';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';clearTimeout(window._tt);window._tt=setTimeout(()=>t.style.opacity='0',2200);}
+
+
+/* ===== Seja Afiliado: assinatura no canvas + aceite ===== */
+let sigCtx=null, sigDesenhou=false;
+function initAssinatura(){
+  const c=document.getElementById('sigCanvas'); if(!c||c._init) return; c._init=true;
+  const ratio=window.devicePixelRatio||1;
+  const r=c.getBoundingClientRect();
+  c.width=r.width*ratio; c.height=150*ratio;
+  sigCtx=c.getContext('2d'); sigCtx.scale(ratio,ratio); sigCtx.lineWidth=2.2; sigCtx.lineCap='round'; sigCtx.strokeStyle='#111';
+  let desenhando=false;
+  const pos=e=>{const b=c.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return {x:t.clientX-b.left,y:t.clientY-b.top};};
+  const start=e=>{desenhando=true;const p=pos(e);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y);e.preventDefault();};
+  const move=e=>{if(!desenhando)return;const p=pos(e);sigCtx.lineTo(p.x,p.y);sigCtx.stroke();sigDesenhou=true;e.preventDefault();};
+  const end=()=>{desenhando=false;};
+  c.addEventListener('mousedown',start);c.addEventListener('mousemove',move);window.addEventListener('mouseup',end);
+  c.addEventListener('touchstart',start,{passive:false});c.addEventListener('touchmove',move,{passive:false});c.addEventListener('touchend',end);
+}
+function limparAssinatura(){const c=document.getElementById('sigCanvas');if(c&&sigCtx){sigCtx.clearRect(0,0,c.width,c.height);sigDesenhou=false;}}
+function enviarAfiliado(){
+  const nome=document.getElementById('afNome').value.trim();
+  const cpf=document.getElementById('afCpf').value.trim();
+  const aceito=document.getElementById('afAceito').checked;
+  const m=document.getElementById('mAfiliado');
+  if(!aceito){m.className='msg erro';m.textContent='Marque "Li e concordo" para continuar.';return;}
+  if(nome.length<3){m.className='msg erro';m.textContent='Informe seu nome completo.';return;}
+  if(cpf.replace(/\D/g,'').length!==11){m.className='msg erro';m.textContent='Informe um CPF válido (11 dígitos).';return;}
+  if(!sigDesenhou){m.className='msg erro';m.textContent='Assine no quadro com o dedo antes de enviar.';return;}
+  const data=new Date().toLocaleString('pt-BR');
+  const txt=encodeURIComponent(`ACEITE DE AFILIADO\nNome: ${nome}\nCPF: ${cpf}\nData/hora: ${data}\nAceite do termo de conduta: SIM\n(assinatura desenhada na tela)`);
+  m.className='msg ok';m.textContent='Aceite registrado! Abrindo o WhatsApp…';
+  window.open(`https://wa.me/${WPP_AJ}?text=${txt}`,'_blank');
+}
+
+/* navegação */
+function irP(p){document.querySelectorAll('nav.abas button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));document.querySelectorAll('section.pg').forEach(s=>s.classList.toggle('oculto',s.dataset.p!==p));window.scrollTo({top:0,behavior:'smooth'});if(p==='afiliado')setTimeout(initAssinatura,50);}
+document.getElementById('abas').addEventListener('click',e=>{if(e.target.dataset.p)irP(e.target.dataset.p);});
+
+/* login demo */
+async function sha256(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+let MEM={};
+function lerU(){try{return JSON.parse(localStorage.getItem('mo_users')||'{}');}catch(e){return MEM;}}
+function salvarU(u){MEM=u;try{localStorage.setItem('mo_users',JSON.stringify(u));}catch(e){}}
+function verCad(){document.getElementById('fLogin').classList.add('oculto');document.getElementById('fCad').classList.remove('oculto');}
+function verLogin(){document.getElementById('fCad').classList.add('oculto');document.getElementById('fLogin').classList.remove('oculto');}
+function verSenha(btn){const inp=document.getElementById(btn.dataset.alvo);if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.classList.add('aberto');btn.setAttribute('aria-label','Ocultar senha');}else{inp.type='password';btn.textContent='👁';btn.classList.remove('aberto');btn.setAttribute('aria-label','Mostrar senha');}}
+async function cadastrar(){const u=cu.value.trim().toLowerCase(),s=cs.value,s2=cs2.value,m=mCad;
+  if(u.length<3){m.className='msg erro';m.textContent='Nome de usuário: use pelo menos 3 caracteres.';return;}
+  if(/\s/.test(u)){m.className='msg erro';m.textContent='O usuário não pode ter espaços.';return;}
+  if(s.length<4){m.className='msg erro';m.textContent='A senha precisa de pelo menos 4 caracteres.';return;}
+  if(s!==s2){m.className='msg erro';m.textContent='As duas senhas estão diferentes. Confira e digite de novo.';return;}
+  const us=await lerU();if(us[u]){m.className='msg erro';m.textContent='Esse usuário já existe. Escolha outro ou faça login.';return;}
+  us[u]={hash:await sha256(s)};await salvarU(us);m.className='msg ok';m.textContent='Acesso criado com sucesso!';setTimeout(()=>{verLogin();lu.value=u;},900);}
+async function entrar(){const u=lu.value.trim().toLowerCase(),s=ls.value,m=mLogin;const us=await lerU();
+  if(!us[u]){m.className='msg erro';m.textContent='Usuário não encontrado. Ative sua conta.';return;}
+  if(us[u].hash!==await sha256(s)){m.className='msg erro';m.textContent='Senha incorreta.';return;}abrir(u);}
+let USUARIO="";
+function abrir(u){USUARIO=u;document.getElementById('login').classList.add('oculto');document.getElementById('app').classList.remove('oculto');nu.textContent=u;heroVol();montarVal();renderFreq(FREQ500,500,FREQ_INFO);renderUltimo();renderFavs();carregarReal();const ci=document.getElementById('concurso');if(ci&&!ci.value)ci.value=(ULTIMO.n+1);try{localStorage.setItem('mo_sess',u);}catch(e){}}
+function sair(){USUARIO="";document.getElementById('app').classList.add('oculto');document.getElementById('login').classList.remove('oculto');ls.value='';try{localStorage.removeItem('mo_sess');}catch(e){}}
+// Enter envia o formulário em qualquer campo
+['lu','ls'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();entrar();}}));
+['cu','cs','cs2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();cadastrar();}}));
+/* mantém conectado: se já criou conta e entrou antes, abre direto */
+(function(){try{const s=localStorage.getItem('mo_sess');const us=lerU();if(s&&us[s])abrir(s);}catch(e){}})();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "servidor-matriz-ouro",
+  "version": "1.0.0",
+  "description": "Atualização automática da Lotofácil (Caixa) para o app Matriz Ouro",
+  "main": "servidor-lotofacil.js",
+  "type": "commonjs",
+  "scripts": { "start": "node servidor-lotofacil.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": { "express": "^4.19.2", "cors": "^2.8.5" }
+}
