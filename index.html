@@ -411,8 +411,8 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
           <button class="btn-acao" onclick="gerar()">Gerar matriz 10/10</button>
         </div>
         <div class="explica-cor" style="margin-top:18px">
-          <div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Números dourados = Moldura</b> (a borda do volante: as 16 dezenas das pontas e laterais). O Padrão Ouro pede 10 dourados em cada jogo.</span></div>
-          <div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Números azuis = Miolo</b> (o centro do volante: 07,08,09,12,13,14,17,18,19). O Padrão Ouro pede 5 azuis em cada jogo. É por isso que as cores se misturam: todo jogo tem 10 dourados + 5 azuis.</span></div>
+          <div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Números dourados = Moldura</b> (a borda do volante).</span></div>
+          <div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Números azuis = Miolo</b> (o centro do volante). A combinação exata entre eles faz parte do método e é aplicada automaticamente.</span></div>
         </div>
         <div id="saida"></div>
         <div class="dica-aposta"><span class="ic">🎟️</span><div><b>Falta o passo mais importante:</b> registrar a aposta! Este sistema é só um <b>auxílio de estudo</b> — ele não faz a aposta por você. Anote seus números e jogue numa <b>casa lotérica</b> ou pelo <b>site/app oficial Loterias Caixa</b>. De nada adianta montar a matriz aqui e não colocar em prática na Caixa.</div></div>
@@ -442,12 +442,12 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
       <div class="card">
         <h3 style="font-size:18px;margin-bottom:6px">Os 6 filtros do Padrão Ouro <span style="font-size:13px;color:var(--txt3);font-weight:400">— fundamentados em muito estudo estatístico</span></h3>
         <p style="color:var(--txt2);font-size:14px;margin-bottom:8px">Cada jogo que a sua matriz gera obedece a estes seis critérios, fruto de muito estudo estatístico. Eles miram a "forma" dos resultados mais comuns — sem nunca alterar a probabilidade de nenhum jogo.</p>
-        <div class="filtro-item"><div class="fic">10·5</div><div><h4>Moldura × Miolo</h4><p>10 dezenas na borda do volante e 5 no centro. Espalha o jogo pelo cartão em vez de amontoar numa região só.</p><div class="faixa-tag">Alvo: exatamente 10 na moldura / 5 no miolo</div></div></div>
-        <div class="filtro-item"><div class="fic">P</div><div><h4>Primos</h4><p>Quantidade de números primos (2,3,5,7,11,13,17,19,23) numa faixa equilibrada — nem de menos, nem demais.</p><div class="faixa-tag">Alvo: 5 a 6 primos</div></div></div>
-        <div class="filtro-item"><div class="fic">Í/P</div><div><h4>Ímpares × Pares</h4><p>Equilíbrio entre números ímpares e pares. Resultados muito desbalanceados são raros.</p><div class="faixa-tag">Alvo: 8Í/7P ou 7Í/8P</div></div></div>
-        <div class="filtro-item"><div class="fic">Σ</div><div><h4>Soma (Curva de Gauss)</h4><p>A soma das 15 dezenas cai numa faixa central. Somas extremas (muito baixas ou altas) quase não acontecem — é a lógica da curva de Gauss.</p><div class="faixa-tag">Alvo: 180 a 210 (ideal 185–205)</div></div></div>
-        <div class="filtro-item"><div class="fic">×3</div><div><h4>Múltiplos de 3</h4><p>Controla quantos múltiplos de 3 entram, mantendo a distribuição saudável.</p><div class="faixa-tag">Alvo: 4 a 6</div></div></div>
-        <div class="filtro-item"><div class="fic">Fib</div><div><h4>Fibonacci</h4><p>Presença de números da sequência de Fibonacci — usado como refinamento/desempate, não como corte rígido.</p><div class="faixa-tag">Referência: 3 a 5 (secundário)</div></div></div>
+        <div class="filtro-item"><div class="fic">10·5</div><div><h4>Moldura × Miolo</h4><p>10 dezenas na borda do volante e 5 no centro. Espalha o jogo pelo cartão em vez de amontoar numa região só.</p><div class="faixa-tag" style="color:var(--txt3)">critério aplicado automaticamente pelo sistema</div></div></div>
+        <div class="filtro-item"><div class="fic">P</div><div><h4>Primos</h4><p>Quantidade de números primos (2,3,5,7,11,13,17,19,23) numa faixa equilibrada — nem de menos, nem demais.</p><div class="faixa-tag" style="color:var(--txt3)">critério aplicado automaticamente pelo sistema</div></div></div>
+        <div class="filtro-item"><div class="fic">Í/P</div><div><h4>Ímpares × Pares</h4><p>Equilíbrio entre números ímpares e pares. Resultados muito desbalanceados são raros.</p><div class="faixa-tag" style="color:var(--txt3)">critério aplicado automaticamente pelo sistema</div></div></div>
+        <div class="filtro-item"><div class="fic">Σ</div><div><h4>Soma (Curva de Gauss)</h4><p>A soma das dezenas é mantida numa faixa equilibrada. Somas extremas quase não acontecem — é a lógica da curva de Gauss.</p><div class="faixa-tag" style="color:var(--txt3)">critério aplicado automaticamente pelo sistema</div></div></div>
+        <div class="filtro-item"><div class="fic">×3</div><div><h4>Múltiplos de 3</h4><p>Controla quantos múltiplos de 3 entram, mantendo a distribuição saudável.</p><div class="faixa-tag" style="color:var(--txt3)">critério aplicado automaticamente pelo sistema</div></div></div>
+        <div class="filtro-item"><div class="fic">Fib</div><div><h4>Fibonacci</h4><p>Presença de números da sequência de Fibonacci — usado como refinamento/desempate, não como corte rígido.</p><div class="faixa-tag" style="color:var(--txt3)">critério aplicado automaticamente pelo sistema</div></div></div>
       </div>
 
       <div class="grid2">
@@ -598,8 +598,8 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
         <p>Quantas vezes cada dezena saiu de verdade nos <b style="color:var(--txt)">500 concursos mais recentes da base (nº 2747 a 3246)</b>. É um retrato do passado — <b style="color:var(--txt)">não</b> uma previsão. Cada sorteio continua independente.</p></div>
       <div class="card">
         <div class="explica-cor">
-          <div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Dourado = Moldura.</b> São as 16 dezenas da <b>borda</b> do volante (linhas de cima e de baixo, e as laterais). O Padrão Ouro pede 10 delas em cada jogo.</span></div>
-          <div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Azul = Miolo.</b> São as 9 dezenas do <b>centro</b> do volante (07,08,09,12,13,14,17,18,19). O Padrão Ouro pede 5 delas em cada jogo.</span></div>
+          <div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Dourado = Moldura.</b> São as dezenas da <b>borda</b> do volante (as linhas de cima e de baixo e as laterais).</span></div>
+          <div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Azul = Miolo.</b> São as dezenas do <b>centro</b> do volante. O equilíbrio exato entre moldura e miolo faz parte do método e é aplicado automaticamente pelo sistema.</span></div>
         </div>
         <div id="freqBanner" class="aviso-senha" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.09),transparent);color:var(--txt2);margin:6px 0 14px">
           <b style="color:var(--ouro)">Atenção — base de exemplo desatualizada.</b> Os números abaixo são de uma base pública que vai até o concurso 3246. O último concurso oficial é o <b style="color:var(--txt)">3775 (30/08/2026)</b>. Para dados 100% reais e atuais, use o botão abaixo e importe o CSV/XLSX da sua planilha (atualizada pela Caixa).
@@ -627,16 +627,16 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
           <button class="btn-acao" onclick="rodarEspelho()">Gerar 1 jogo + 3 inversões</button>
         </div>
-        <div class="explica-cor" style="margin-top:16px"><div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Dourado = Moldura</b> (borda do volante).</span></div><div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Azul = Miolo</b> (centro). O jogo base tem 10 dourados + 5 azuis; nas inversões as cores mudam de lugar.</span></div></div>
+        <div class="explica-cor" style="margin-top:16px"><div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Dourado = Moldura</b> (borda do volante).</span></div><div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Azul = Miolo</b> (centro). Nas inversões as cores mudam de lugar.</span></div></div>
         <div id="saidaEspelho"></div>
         <div class="dica-aposta"><span class="ic">🎟️</span><div><b>Falta o passo mais importante:</b> registrar a aposta! Este sistema é só um <b>auxílio de estudo</b> — ele não faz a aposta por você. Anote seus números e jogue numa <b>casa lotérica</b> ou pelo <b>site/app oficial Loterias Caixa</b>. De nada adianta montar a matriz aqui e não colocar em prática na Caixa.</div></div>
       </div>
       <div class="card">
         <h3 style="font-size:16px;margin-bottom:8px">O que é cada inversão (o sistema faz sozinho)</h3>
-        <p style="font-size:13px;color:var(--txt3);margin-bottom:12px">Todas mantêm as colunas fixas e apenas reorganizam a ordem das 5 linhas do volante — cada dezena muda de linha, nunca de coluna.</p>
-        <div class="passo"><div class="pn">1</div><div><h4>Jogo 2 — 1ª Inversão · Reflexão Vertical (5-4-3-2-1)</h4><p>A ordem das linhas passa a ser 5ª, 4ª, 3ª, 2ª, 1ª (a linha do meio fica no lugar). Ex.: 01 vira 21.</p></div></div>
-        <div class="passo"><div class="pn">2</div><div><h4>Jogo 3 — 2ª Inversão · Troca Intermediária (4-2-5-1-3)</h4><p>As linhas são recolocadas na ordem 4ª, 2ª, 5ª, 1ª, 3ª, gerando um arranjo diferente. Ex.: 01 vira 16.</p></div></div>
-        <div class="passo"><div class="pn">3</div><div><h4>Jogo 4 — 3ª Inversão · Reagrupamento (3-1-5-2-4)</h4><p>As linhas são recolocadas na ordem 3ª, 1ª, 5ª, 2ª, 4ª, criando o terceiro arranjo. Ex.: 01 vira 06.</p></div></div>
+        <p style="font-size:13px;color:var(--txt3);margin-bottom:12px">As três inversões reorganizam a posição das dezenas no volante de forma geométrica — cada uma cria um arranjo diferente do jogo base. O sistema faz tudo automaticamente; os detalhes de como cada inversão é montada fazem parte do método.</p>
+        <div class="passo"><div class="pn">1</div><div><h4>Jogo 2 — 1ª Inversão · Reflexão Vertical</h4><p>Um espelhamento do jogo base no volante, criando o primeiro arranjo.</p></div></div>
+        <div class="passo"><div class="pn">2</div><div><h4>Jogo 3 — 2ª Inversão · Troca Intermediária</h4><p>Uma nova reorganização das posições, gerando um arranjo diferente.</p></div></div>
+        <div class="passo"><div class="pn">3</div><div><h4>Jogo 4 — 3ª Inversão · Reagrupamento</h4><p>Um terceiro rearranjo das dezenas, completando os quatro jogos.</p></div></div>
         <div class="aviso-senha" style="border-color:var(--linha);background:var(--grafite);color:var(--txt2);margin-top:6px">
           <b style="color:var(--ouro)">Importante e honesto:</b> a Prisma é uma estratégia <b>extra e independente</b> — não substitui nem se mistura aos 6 filtros do Padrão Ouro. As inversões são <b>simetrias geométricas</b>: diversificam cenários com pouco dinheiro, mas <b>não</b> aumentam a chance de nenhum jogo (cada um continua 1 em 3.268.760). Por serem geométricas, as inversões <b>podem não passar</b> nos 6 filtros do Padrão Ouro — só o jogo base é garantido 10/10. Isso é da natureza da técnica.
         </div>
@@ -794,7 +794,7 @@ function cobLista4(gs){
 function rodarEspelho(){
   const base=gerarUm(6000);const box=document.getElementById('saidaEspelho');
   if(!base){box.innerHTML='<p style="color:var(--vermelho);margin-top:14px">Tente de novo.</p>';return;}
-  const jogos=[["Jogo 1 — Base Original",base],["Jogo 2 — 1ª Inversão · Reflexão Vertical 5-4-3-2-1",inverter(base,PERMS[0])],["Jogo 3 — 2ª Inversão · Troca Intermediária 4-2-5-1-3",inverter(base,PERMS[1])],["Jogo 4 — 3ª Inversão · Reagrupamento 3-1-5-2-4",inverter(base,PERMS[2])]];
+  const jogos=[["Jogo 1 — Base Original",base],["Jogo 2 — 1ª Inversão",inverter(base,PERMS[0])],["Jogo 3 — 2ª Inversão",inverter(base,PERMS[1])],["Jogo 4 — 3ª Inversão",inverter(base,PERMS[2])]];
   let html='<div style="margin-top:18px">';
   jogos.forEach(([nome,g])=>{const a=analisar(g);
     html+=`<div class="jogo"><div class="idj" style="min-width:100%;margin-bottom:4px">${nome}</div>
@@ -928,10 +928,19 @@ async function carregarReal(){
       data.concursos.forEach(c=>{(c.dezenas||[]).forEach(n=>{if(n>=1&&n<=25)freq[n]++;});tot++;ns.push(c.numero);});
       FREQ_ATUAL=freq;
       renderFreq(freq,tot,`dados oficiais AO VIVO — ${tot} concursos (${Math.min(...ns)}–${Math.max(...ns)})`);
+      const atual = (data.ultimo.numero >= 3775);
       const b=document.getElementById('freqBanner');
-      if(b){b.style.borderColor='rgba(40,209,124,.4)';b.innerHTML='<b style="color:var(--verde)">✓ Base ao vivo:</b> último concurso e os '+tot+' anteriores estão sendo atualizados automaticamente pelo servidor oficial. Nenhuma ação manual necessária.';}
-      const bi=document.getElementById('blocoImport'); if(bi) bi.classList.add('oculto');   // servidor OK -> some o import
-      const ai=document.getElementById('avisoImport'); if(ai) ai.classList.add('oculto');
+      const bi=document.getElementById('blocoImport');
+      const ai=document.getElementById('avisoImport');
+      if(atual){
+        if(b){b.style.borderColor='rgba(40,209,124,.4)';b.innerHTML='<b style="color:var(--verde)">✓ Base ao vivo:</b> último concurso ('+data.ultimo.numero+') e os '+tot+' anteriores atualizados automaticamente. Nenhuma acao manual necessaria.';}
+        if(bi) bi.classList.add('oculto');
+        if(ai) ai.classList.add('oculto');
+      } else {
+        if(b){b.style.borderColor='var(--ouro-esc)';b.innerHTML='<b style="color:var(--ouro)">Atencao — a fonte automatica esta atrasada.</b> Ela trouxe ate o concurso '+data.ultimo.numero+'. Para os dados mais recentes agora, use o botao abaixo e importe sua planilha atualizada.';}
+        if(bi) bi.classList.remove('oculto');
+        if(ai) ai.classList.remove('oculto');
+      }
     }
   }catch(e){
     /* servidor fora do ar → mostra o import manual como plano B, com aviso */
