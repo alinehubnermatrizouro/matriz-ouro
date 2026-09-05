@@ -705,6 +705,7 @@ const FIBO=new Set([1,2,3,5,8,13,21]);
 function analisar(dz){
   const s=[...dz].sort((a,b)=>a-b);let mold=0,pri=0,imp=0,soma=0,m3=0,fib=0;
   for(const n of s){if(MOLDURA.has(n))mold++;if(PRIMOS.has(n))pri++;if(n%2)imp++;soma+=n;if(MULT3.has(n))m3++;if(FIBO.has(n))fib++;}
+  /* soma 185-205 = pico super-otimizado deliberado; a regua-ouro admite 180-210, estreitar aqui eleva a qualidade por jogo */
   const abs=(mold===10&&pri>=5&&pri<=6&&(imp===7||imp===8)&&soma>=185&&soma<=205&&m3>=4&&m3<=6&&fib>=3&&fib<=5);
   return{dz:s,mold,miolo:15-mold,pri,imp,par:15-imp,soma,m3,fib,abs};
 }
@@ -968,7 +969,7 @@ function renderUltimo(){
 function lerFavs(){try{return JSON.parse(localStorage.getItem('mo_favs_'+USUARIO)||'[]');}catch(e){return [];}}
 function salvarFavs(a){try{localStorage.setItem('mo_favs_'+USUARIO,JSON.stringify(a));}catch(e){}}
 function salvarFav(dz){
-  const conc=(document.getElementById('concurso')&&document.getElementById('concurso').value.trim())||(ULTIMO.n+1);
+  const conc=(document.getElementById('concurso')&&document.getElementById('concurso').value.trim())||((ULTIMO&&ULTIMO.n)?ULTIMO.n+1:'');
   const favs=lerFavs();
   favs.unshift({dz:[...dz].sort((a,b)=>a-b),conc:conc,data:new Date().toLocaleDateString('pt-BR')});
   salvarFavs(favs);toast('★ Jogo salvo em "Meus Jogos"!');renderFavs();
@@ -1043,7 +1044,7 @@ async function entrar(){const u=lu.value.trim().toLowerCase(),s=ls.value,m=mLogi
   if(!us[u]){m.className='msg erro';m.textContent='Usuário não encontrado. Ative sua conta.';return;}
   if(us[u].hash!==await sha256(s)){m.className='msg erro';m.textContent='Senha incorreta.';return;}abrir(u);}
 let USUARIO="";
-function abrir(u){USUARIO=u;document.getElementById('login').classList.add('oculto');document.getElementById('app').classList.remove('oculto');nu.textContent=u;heroVol();montarVal();renderUltimo();renderFavs();const ci=document.getElementById('concurso');if(ci&&!ci.value)ci.value=(ULTIMO.n+1);try{localStorage.setItem('mo_sess',u);}catch(e){}}
+function abrir(u){USUARIO=u;document.getElementById('login').classList.add('oculto');document.getElementById('app').classList.remove('oculto');nu.textContent=u;heroVol();montarVal();renderUltimo();renderFavs();const ci=document.getElementById('concurso');if(ci&&!ci.value&&ULTIMO&&ULTIMO.n)ci.value=(ULTIMO.n+1);try{localStorage.setItem('mo_sess',u);}catch(e){}}
 function sair(){USUARIO="";document.getElementById('app').classList.add('oculto');document.getElementById('login').classList.remove('oculto');ls.value='';try{localStorage.removeItem('mo_sess');}catch(e){}}
 // Enter envia o formulário em qualquer campo
 ['lu','ls'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();entrar();}}));
