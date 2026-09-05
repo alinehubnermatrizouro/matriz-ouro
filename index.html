@@ -263,7 +263,7 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
   <div class="login-brand">
     <div class="glow"></div>
     <div>
-      <div class="wordmark">Matriz <span>Ouro</span></div>
+      <div class="wordmark">Matriz <span>Ouro</span> WEB</div>
       <h2>Engenharia combinatória a serviço da sua banca.</h2>
       <p>Uma área exclusiva onde você monta sua própria matriz de jogos, filtrada pelo rigor do Padrão Ouro — com os estudos das maiores referências do país explicados de forma clara.</p>
       <div class="brand-list">
@@ -343,7 +343,7 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
   <div class="faixa"><b>Não é promessa de prêmio.</b> Toda combinação de 15 dezenas tem a mesma chance: 1 em 3.268.760. Aqui você organiza cobertura e disciplina — não previsão. Jogue com responsabilidade · +18.</div>
   <div class="wrap">
     <header class="top">
-      <div class="wordmark">Matriz <span style="background:linear-gradient(120deg,var(--ouro),var(--ouro-f));-webkit-background-clip:text;background-clip:text;color:transparent">Ouro</span></div>
+      <div class="wordmark">Matriz <span style="background:linear-gradient(120deg,var(--ouro),var(--ouro-f));-webkit-background-clip:text;background-clip:text;color:transparent">Ouro</span> WEB</div>
       <div class="right"><span class="assinatura-status" style="margin:0"><i></i> Ativa</span><span>Olá, <b id="nu" style="color:var(--txt)"></b></span><button class="btn-sair" onclick="sair()">Sair</button></div>
     </header>
 
@@ -383,7 +383,7 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
           </div>
         </div>
       </div>
-      <div class="card" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.07),var(--painel))">
+      <div id="cardUltimo" class="card oculto" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.07),var(--painel))">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
           <div><div class="eyebrow">Último resultado oficial</div><h3 style="font-size:19px" id="ultTitulo"></h3></div>
           <div class="dz-row" id="ultDezenas" style="flex:0"></div>
@@ -601,9 +601,7 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
           <div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Dourado = Moldura.</b> São as dezenas da <b>borda</b> do volante (as linhas de cima e de baixo e as laterais).</span></div>
           <div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Azul = Miolo.</b> São as dezenas do <b>centro</b> do volante. O equilíbrio exato entre moldura e miolo faz parte do método e é aplicado automaticamente pelo sistema.</span></div>
         </div>
-        <div id="freqBanner" class="aviso-senha" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.09),transparent);color:var(--txt2);margin:6px 0 14px">
-          <b style="color:var(--ouro)">Atenção — base de exemplo desatualizada.</b> Os números abaixo são de uma base pública que vai até o concurso 3246. O último concurso oficial é o <b style="color:var(--txt)">3775 (30/08/2026)</b>. Para dados 100% reais e atuais, use o botão abaixo e importe o CSV/XLSX da sua planilha (atualizada pela Caixa).
-        </div>
+        <div id="freqBanner" class="aviso-senha" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.09),transparent);color:var(--txt2);margin:6px 0 14px"><b style="color:var(--ouro)">Use sua planilha oficial.</b> Os dados de frequência vêm da planilha que <b>você importa</b> (exportada do Google Sheets ou do site da Caixa). Assim você tem sempre os concursos que quiser, direto da fonte oficial.</div>
         <div id="blocoImport" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 4px;padding:14px;background:var(--grafite);border:1px dashed var(--linha);border-radius:12px">
           <div style="flex:1;min-width:220px;font-size:13px;color:var(--txt2)">Quer usar <b style="color:var(--txt)">sua</b> planilha oficial? Baixe em CSV ou XLSX (Google Sheets ou site da Caixa) e importe aqui — a frequência é recalculada com os seus dados.</div>
           <input type="file" id="csvFreq" accept=".csv,.xlsx,.xls" style="display:none" onchange="importarCSV(event)">
@@ -612,7 +610,7 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
         <div id="avisoImport" style="font-size:12.5px;color:var(--txt2);margin:2px 0 8px"><b style="color:var(--ouro)">Planilha oficial:</b> você pode <b>atualizar os dados a qualquer momento</b> com a sua planilha (exportada do Google Sheets ou do site da Caixa). É a forma garantida de manter os concursos em dia. Basta usar o botão acima.</div>
         <div id="freqStatus" style="font-size:12.5px;color:var(--verde);margin-bottom:8px"></div>
         <p style="font-size:13px;color:var(--txt3);margin:10px 0 16px">Numa distribuição perfeitamente equilibrada, cada dezena sairia ~300 vezes (60%). As diferenças abaixo são flutuação estatística natural — não um "número premiado".</p>
-        <div id="barrasFreq"></div>
+        <div id="barrasFreq"><p style="color:var(--txt2);font-size:14px;margin:10px 0">Nenhuma planilha importada ainda. Use o botão acima para carregar sua planilha oficial (CSV ou XLSX) e ver a frequência real das dezenas.</p></div>
         <p style="margin-top:16px;font-size:12.5px;color:var(--txt3)">Base pública de resultados (repositório aberto). Confira sempre os números oficiais no site da Caixa; <span id="janelaFim">esta janela vai até o concurso 3246.</span></p>
       </div>
     </section>
@@ -847,7 +845,7 @@ function enviarBolao(){
 
 /* ===== Frequência: render + importar CSV ===== */
 const API_BASE = "";   // vazio = mesmo servidor. Se o servidor estiver em outro endereço, coloque a URL aqui.
-let ULTIMO={n:3775, data:"30/08/2026", dz:[1,4,5,6,8,10,11,12,13,15,17,18,19,23,25]}; // fallback (exemplo) até o servidor responder
+let ULTIMO=null; // preenchido somente quando a pessoa importa a planilha oficial
 let FREQ_ATUAL=FREQ500; let FREQ_INFO="base de EXEMPLO (concursos 2747–3246) — importe seu CSV atualizado";
 function renderFreq(freq,total,info){
   const MOLD=new Set([1,2,3,4,5,6,10,11,15,16,20,21,22,23,24,25]);
@@ -875,12 +873,21 @@ function contarLinhas(linhas,lenient){
     const linhaValida = dz.length>=15 && (lenient || hasBig || hadDate);
     if(linhaValida){ dz.slice(0,15).forEach(n=>freq[n]++); total++; }
   }
-  return {freq,total,concs};
+  let ultimoDz=null,maiorC=-1;
+  for(const raw of linhas){
+    let ln=String(raw).replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g,' ');
+    const nums=(ln.match(/\d+/g)||[]).map(Number);
+    const conc=nums.find(x=>x>=1000&&x<=9999);
+    const dz=[...new Set(nums.filter(x=>x>=1&&x<=25))];
+    if(conc&&dz.length>=15&&conc>maiorC){maiorC=conc;ultimoDz=dz.slice(0,15).sort((a,b)=>a-b);}
+  }
+  return {freq,total,concs,ultimoDz};
 }
 function aplicarFreq(r){
   const st=document.getElementById('freqStatus');
   if(r.total===0){st.style.color='var(--vermelho)';st.textContent='Não encontrei linhas com 15 dezenas. Confira o arquivo (as dezenas de cada concurso devem estar na mesma linha).';return;}
   const range=r.concs.length?` (concursos ${Math.min(...r.concs)}–${Math.max(...r.concs)})`:'';
+  if(r.concs.length){ const maior=Math.max(...r.concs); if(r.ultimoDz && r.ultimoDz.length===15){ ULTIMO={n:maior,data:'',dz:r.ultimoDz}; renderUltimo(); const ci=document.getElementById('concurso'); if(ci) ci.value=(maior+1); } }
   FREQ_ATUAL=r.freq;FREQ_INFO=`sua planilha — ${r.total} concursos${range}`;
   renderFreq(r.freq,r.total,FREQ_INFO);
   st.style.color='var(--verde)';st.textContent=`✓ Importado: ${r.total} concursos da sua planilha${range}. Dados oficiais em uso.`;
@@ -949,9 +956,13 @@ async function carregarReal(){
 }
 /* ===== Último concurso ===== */
 function renderUltimo(){
-  const t=document.getElementById('ultTitulo');if(t)t.textContent=`Concurso ${ULTIMO.n} — ${ULTIMO.data}`;
+  const card=document.getElementById('cardUltimo');
+  if(card) card.classList.add('oculto'); return; /* card do ultimo resultado removido */
+  const t=document.getElementById('ultTitulo');
+  if(t)t.textContent='Concurso '+ULTIMO.n+(ULTIMO.data?(' — '+ULTIMO.data):'');
   const d=document.getElementById('ultDezenas');
   if(d)d.innerHTML=ULTIMO.dz.map(n=>`<span class="dz ${MOLDURA.has(n)?'mo':'mi'}">${String(n).padStart(2,'0')}</span>`).join('');
+  if(card) card.classList.remove('oculto');
 }
 /* ===== Meus Jogos (favoritos) ===== */
 function lerFavs(){try{return JSON.parse(localStorage.getItem('mo_favs_'+USUARIO)||'[]');}catch(e){return [];}}
@@ -1032,7 +1043,7 @@ async function entrar(){const u=lu.value.trim().toLowerCase(),s=ls.value,m=mLogi
   if(!us[u]){m.className='msg erro';m.textContent='Usuário não encontrado. Ative sua conta.';return;}
   if(us[u].hash!==await sha256(s)){m.className='msg erro';m.textContent='Senha incorreta.';return;}abrir(u);}
 let USUARIO="";
-function abrir(u){USUARIO=u;document.getElementById('login').classList.add('oculto');document.getElementById('app').classList.remove('oculto');nu.textContent=u;heroVol();montarVal();renderFreq(FREQ500,500,FREQ_INFO);renderUltimo();renderFavs();carregarReal();const ci=document.getElementById('concurso');if(ci&&!ci.value)ci.value=(ULTIMO.n+1);try{localStorage.setItem('mo_sess',u);}catch(e){}}
+function abrir(u){USUARIO=u;document.getElementById('login').classList.add('oculto');document.getElementById('app').classList.remove('oculto');nu.textContent=u;heroVol();montarVal();renderUltimo();renderFavs();const ci=document.getElementById('concurso');if(ci&&!ci.value)ci.value=(ULTIMO.n+1);try{localStorage.setItem('mo_sess',u);}catch(e){}}
 function sair(){USUARIO="";document.getElementById('app').classList.add('oculto');document.getElementById('login').classList.remove('oculto');ls.value='';try{localStorage.removeItem('mo_sess');}catch(e){}}
 // Enter envia o formulário em qualquer campo
 ['lu','ls'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();entrar();}}));
