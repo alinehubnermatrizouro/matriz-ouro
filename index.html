@@ -545,12 +545,12 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
         </div>
 
         <div class="form-bolao" style="max-width:560px">
-          <label class="check" style="margin-top:18px"><input type="checkbox" id="afAceito"><span>Li e <b style="color:var(--txt)">concordo</b> com o termo de conduta acima. Comprometo-me a nunca prometer ganho e entendo que respondo pessoalmente por qualquer afirmação fora destas regras.</span></label>
+          <label class="check" style="margin-top:18px"><input type="checkbox" id="afAceito"><span>Li e <b style="color:var(--txt)">concordo</b> com o termo de conduta acima. Comprometo-me a nunca prometer ganho e entendo que respondo pessoalmente por qualquer afirmação fora destas regras. <b style="color:var(--txt)">Autorizo o contato pelo WhatsApp informado</b> para me ajudarem a concluir minha afiliação.</span></label>
 
           <label class="lab">Nome completo</label>
           <input type="text" id="afNome" placeholder="Seu nome completo">
-          <label class="lab">CPF</label>
-          <input type="text" id="afCpf" placeholder="000.000.000-00">
+          <label class="lab">WhatsApp (com DDD)</label>
+          <input type="text" id="afWpp" placeholder="(11) 90000-0000">
 
           <label class="lab">Assine abaixo com o dedo</label>
           <div class="sig-wrap">
@@ -562,7 +562,7 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
 
           <button class="btn-acao" style="margin-top:18px" onclick="enviarAfiliado()">Aceitar e assinar</button>
           <div class="msg" id="mAfiliado"></div>
-          <p style="font-size:11.5px;color:var(--txt3);margin-top:12px">Ao enviar, seu aceite (nome, CPF, data e assinatura) é registrado e enviado à equipe pelo WhatsApp. Este é um aceite simples de conduta.</p>
+          <p style="font-size:11.5px;color:var(--txt3);margin-top:12px">Ao enviar, seu interesse (nome, WhatsApp, data e aceite) é enviado à nossa equipe pelo WhatsApp para te ajudarmos a concluir a afiliação no Hubla. <b style="color:var(--txt2)">Não pedimos CPF aqui</b> — ele é solicitado apenas no cadastro oficial do Hubla.</p>
         </div>
       </div>
     </section>
@@ -1016,16 +1016,16 @@ function initAssinatura(){
 function limparAssinatura(){const c=document.getElementById('sigCanvas');if(c&&sigCtx){sigCtx.clearRect(0,0,c.width,c.height);sigDesenhou=false;}}
 function enviarAfiliado(){
   const nome=document.getElementById('afNome').value.trim();
-  const cpf=document.getElementById('afCpf').value.trim();
+  const wpp=document.getElementById('afWpp').value.trim();
   const aceito=document.getElementById('afAceito').checked;
   const m=document.getElementById('mAfiliado');
   if(!aceito){m.className='msg erro';m.textContent='Marque "Li e concordo" para continuar.';return;}
   if(nome.length<3){m.className='msg erro';m.textContent='Informe seu nome completo.';return;}
-  if(cpf.replace(/\D/g,'').length!==11){m.className='msg erro';m.textContent='Informe um CPF válido (11 dígitos).';return;}
+  if(wpp.replace(/\D/g,'').length<10){m.className='msg erro';m.textContent='Informe um WhatsApp válido com DDD.';return;}
   if(!sigDesenhou){m.className='msg erro';m.textContent='Assine no quadro com o dedo antes de enviar.';return;}
   const data=new Date().toLocaleString('pt-BR');
-  const txt=encodeURIComponent(`ACEITE DE AFILIADO\nNome: ${nome}\nCPF: ${cpf}\nData/hora: ${data}\nAceite do termo de conduta: SIM\n(assinatura desenhada na tela)`);
-  m.className='msg ok';m.textContent='Aceite registrado! Abrindo o WhatsApp…';
+  const txt=encodeURIComponent(`INTERESSE EM AFILIACAO - Matriz Ouro WEB\nNome: ${nome}\nWhatsApp: ${wpp}\nData/hora: ${data}\nLi e aceitei o termo de conduta: SIM\nAutorizo contato para me ajudar a me afiliar no Hubla.`);
+  m.className='msg ok';m.textContent='Interesse enviado! Abrindo o WhatsApp…';
   window.open(`https://wa.me/${WPP_AJ}?text=${txt}`,'_blank');
 }
 
