@@ -603,7 +603,7 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
     <!-- FREQUÊNCIA 500 -->
     <section class="pg oculto" data-p="freq">
       <div class="head"><div class="eyebrow">Dados reais · fonte pública</div><h2>Frequência nos últimos 500 concursos</h2>
-        <p>Quantas vezes cada dezena saiu de verdade nos <b style="color:var(--txt)">500 concursos mais recentes da base (nº 2747 a 3246)</b>. É um retrato do passado — <b style="color:var(--txt)">não</b> uma previsão. Cada sorteio continua independente.</p></div>
+        <p>Quantas vezes cada dezena saiu de verdade nos <b style="color:var(--txt)">500 concursos mais recentes da base (nº <span id="janelaTopo">carregando…</span>)</b>. É um retrato do passado — <b style="color:var(--txt)">não</b> uma previsão. Cada sorteio continua independente.</p></div>
       <div class="card">
         <div class="explica-cor">
           <div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Dourado = Moldura.</b> São as dezenas da <b>borda</b> do volante (as linhas de cima e de baixo e as laterais).</span></div>
@@ -855,7 +855,7 @@ function enviarBolao(){
 /* ===== Frequência: render + importar CSV ===== */
 const API_BASE = "";   // vazio = mesmo servidor. Se o servidor estiver em outro endereço, coloque a URL aqui.
 let ULTIMO=null; // preenchido somente quando a pessoa importa a planilha oficial
-let FREQ_ATUAL=FREQ500; let FREQ_INFO="base de EXEMPLO (concursos 2747–3246) — importe seu CSV atualizado";
+let FREQ_ATUAL=FREQ500; let FREQ_INFO="carregando dados atualizados…";
 function renderFreq(freq,total,info){
   const MOLD=new Set([1,2,3,4,5,6,10,11,15,16,20,21,22,23,24,25]);
   const vals=[];for(let n=1;n<=25;n++)vals.push(freq[n]||0);
@@ -928,37 +928,37 @@ function importarCSV(ev){
 }
 
 
-/* ===== Atualização automática (servidor Caixa) ===== */
+/* ===== Atualizacao automatica (fonte publica atualizada) ===== */
+const FONTE_HIST='https://raw.githubusercontent.com/rjaugusto/lotofacil-dados/main/historico.json';
 async function carregarReal(){
   try{
-    const resp=await fetch((API_BASE||'')+'/api/lotofacil',{cache:'no-store'});
-    if(!resp.ok) throw new Error('sem servidor');
+    const resp=await fetch(FONTE_HIST);
+    if(!resp.ok) throw new Error('sem fonte');
     const data=await resp.json();
-    if(data.ultimo&&Array.isArray(data.ultimo.dezenas)){
-      ULTIMO={n:data.ultimo.numero,data:data.ultimo.data,dz:data.ultimo.dezenas};
-      renderUltimo();
-      const ci=document.getElementById('concurso'); if(ci) ci.value=(ULTIMO.n+1);
-    }
-    if(Array.isArray(data.concursos)&&data.concursos.length){
-      const freq={};for(let i=1;i<=25;i++)freq[i]=0;let tot=0,ns=[];
-      data.concursos.forEach(c=>{(c.dezenas||[]).forEach(n=>{if(n>=1&&n<=25)freq[n]++;});tot++;ns.push(c.numero);});
-      FREQ_ATUAL=freq;
-      renderFreq(freq,tot,`dados oficiais AO VIVO — ${tot} concursos (${Math.min(...ns)}–${Math.max(...ns)})`);
-      const atual = (data.ultimo.numero >= 3775);
-      const b=document.getElementById('freqBanner');
-      const bi=document.getElementById('blocoImport');
-      const ai=document.getElementById('avisoImport');
-      if(atual){
-        if(b){b.style.borderColor='rgba(40,209,124,.4)';b.innerHTML='<b style="color:var(--verde)">✓ Base ao vivo:</b> último concurso ('+data.ultimo.numero+') e os '+tot+' anteriores atualizados automaticamente.';}
-      } else {
-        if(b){b.style.borderColor='var(--ouro-esc)';b.innerHTML='<b style="color:var(--ouro)">Fonte automatica atrasada.</b> Ela trouxe ate o concurso '+data.ultimo.numero+'. Para os dados mais recentes, importe sua planilha oficial no botao abaixo.';}
-      }
-      // o bloco de importar fica SEMPRE visivel (a pedido)
-      if(bi) bi.classList.remove('oculto');
-      if(ai) ai.classList.remove('oculto');
-    }
+    let hist=Array.isArray(data.historico)?data.historico:(Array.isArray(data)?data:[]);
+    hist=hist.filter(c=>c&&Array.isArray(c.dezenas)&&c.dezenas.length>=15&&c.numero)
+             .map(c=>({numero:+c.numero,data:c.dataApuracao||c.data||'',dezenas:c.dezenas.map(Number)}));
+    hist.sort((a,b)=>b.numero-a.numero);
+    if(!hist.length) throw new Error('vazio');
+    const ult=hist[0];
+    ULTIMO={n:ult.numero,data:ult.data,dz:[...ult.dezenas].sort((a,b)=>a-b)};
+    renderUltimo();
+    const ci=document.getElementById('concurso'); if(ci) ci.value=(ULTIMO.n+1);
+    const janela=hist.slice(0,500);
+    const freq={};for(let i=1;i<=25;i++)freq[i]=0;
+    janela.forEach(c=>c.dezenas.forEach(n=>{if(n>=1&&n<=25)freq[n]++;}));
+    FREQ_ATUAL=freq;
+    const ns=janela.map(c=>c.numero); const cmin=Math.min(...ns),cmax=Math.max(...ns);
+    renderFreq(freq,janela.length,`dados oficiais atualizados — ${janela.length} concursos (${cmin}–${cmax})`);
+    const jt=document.getElementById('janelaTopo'); if(jt) jt.textContent=cmin+'–'+cmax;
+    const b=document.getElementById('freqBanner');
+    if(b){b.style.borderColor='rgba(40,209,124,.4)';b.innerHTML='<b style="color:var(--verde)">\u2713 Base atualizada automaticamente:</b> \u00faltimo concurso <b>'+ult.numero+'</b>'+(ult.data?(' ('+ult.data+')'):'')+' e os '+janela.length+' mais recentes. Fonte p\u00fablica; confira sempre os n\u00fameros oficiais no site da Caixa.';}
+    const bi=document.getElementById('blocoImport'); if(bi) bi.classList.remove('oculto');
+    const ai=document.getElementById('avisoImport'); if(ai) ai.classList.remove('oculto');
   }catch(e){
-    /* servidor fora do ar → mostra o import manual como plano B, com aviso */
+    const jt=document.getElementById('janelaTopo'); if(jt) jt.textContent='importe sua planilha';
+    const b=document.getElementById('freqBanner');
+    if(b){b.style.borderColor='var(--ouro-esc)';b.innerHTML='<b style="color:var(--ouro)">N\u00e3o consegui atualizar agora.</b> Sem conex\u00e3o com a fonte p\u00fablica no momento \u2014 voc\u00ea pode importar sua planilha oficial no bot\u00e3o abaixo.';}
     const bi=document.getElementById('blocoImport'); if(bi) bi.classList.remove('oculto');
     const ai=document.getElementById('avisoImport'); if(ai) ai.classList.remove('oculto');
   }
@@ -1052,7 +1052,7 @@ async function entrar(){const u=lu.value.trim().toLowerCase(),s=ls.value,m=mLogi
   if(!us[u]){m.className='msg erro';m.textContent='Usuário não encontrado. Ative sua conta.';return;}
   if(us[u].hash!==await sha256(s)){m.className='msg erro';m.textContent='Senha incorreta.';return;}abrir(u);}
 let USUARIO="";
-function abrir(u){USUARIO=u;document.getElementById('login').classList.add('oculto');document.getElementById('app').classList.remove('oculto');nu.textContent=u;heroVol();montarVal();renderUltimo();renderFavs();const ci=document.getElementById('concurso');if(ci&&!ci.value&&ULTIMO&&ULTIMO.n)ci.value=(ULTIMO.n+1);try{localStorage.setItem('mo_sess',u);}catch(e){}}
+function abrir(u){USUARIO=u;document.getElementById('login').classList.add('oculto');document.getElementById('app').classList.remove('oculto');nu.textContent=u;heroVol();montarVal();renderUltimo();renderFavs();try{renderFreq(FREQ_ATUAL,500,FREQ_INFO);}catch(e){}carregarReal();const ci=document.getElementById('concurso');if(ci&&!ci.value&&ULTIMO&&ULTIMO.n)ci.value=(ULTIMO.n+1);try{localStorage.setItem('mo_sess',u);}catch(e){}}
 function sair(){USUARIO="";document.getElementById('app').classList.add('oculto');document.getElementById('login').classList.remove('oculto');ls.value='';try{localStorage.removeItem('mo_sess');}catch(e){}}
 // Enter envia o formulário em qualquer campo
 ['lu','ls'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();entrar();}}));
