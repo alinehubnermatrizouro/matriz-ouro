@@ -410,6 +410,14 @@ footer{border-top:1px solid var(--linha);margin-top:20px;padding:26px 0 44px;col
           <div class="ctrl"><label>Sobreposição máxima</label><input type="number" id="mov" value="9" min="7" max="13"><div class="hint">Menor = jogos mais diferentes entre si.</div></div>
           <button class="btn-acao" onclick="gerar()">Gerar matriz 10/10</button>
         </div>
+        <details class="dica-aposta" style="border-color:var(--ouro-esc);background:linear-gradient(160deg,rgba(232,194,90,.07),transparent);margin-top:16px">
+          <summary style="cursor:pointer;font-weight:700;color:var(--ouro)">O que &eacute; &ldquo;sobreposi&ccedil;&atilde;o m&aacute;xima&rdquo;? &nbsp;<span style="font-weight:400;color:var(--txt3)">(toque para entender)</span></summary>
+          <div style="margin-top:12px;font-size:13.5px;line-height:1.6;color:var(--txt2)">
+            <p style="margin:0 0 9px"><b style="color:var(--txt)">Sobreposi&ccedil;&atilde;o</b> &eacute; quantas dezenas dois jogos t&ecirc;m <b>em comum</b>. Se dois cart&otilde;es t&ecirc;m 14 n&uacute;meros iguais, a sobreposi&ccedil;&atilde;o entre eles &eacute; 14 &mdash; s&atilde;o quase <b>g&ecirc;meos</b> e cobrem quase o mesmo peda&ccedil;o das possibilidades (dinheiro repetido). Se t&ecirc;m s&oacute; 7 iguais, s&atilde;o bem diferentes e cada um cobre um <b>territ&oacute;rio novo</b>.</p>
+            <p style="margin:0 0 9px">Este campo &eacute; o <b>teto</b>: o gerador n&atilde;o deixa nenhum par de jogos passar desse n&uacute;mero de dezenas repetidas. Por isso <b>menor = jogos mais diferentes</b> &mdash; e a sua banca &ldquo;enxerga&rdquo; mais sorteios poss&iacute;veis pelo mesmo pre&ccedil;o.</p>
+            <p style="margin:0;padding:11px 13px;border-radius:10px;background:rgba(232,194,90,.09)"><b style="color:var(--ouro)">&#127942; Dica dos mestres:</b> de nada adianta 10 cart&otilde;es &oacute;timos se forem quase iguais. A escola da <b>engenharia de matrizes</b> ensina a manter a sobreposi&ccedil;&atilde;o <b>baixa (entre 8 e 9)</b>: assim os jogos se espalham, os &ldquo;g&ecirc;meos&rdquo; somem e a cobertura sobe <b>sem gastar mais</b>. S&oacute; aumente o limite se precisar fechar muitos jogos e o gerador avisar que n&atilde;o conseguiu montar.</p>
+          </div>
+        </details>
         <div class="explica-cor" style="margin-top:18px">
           <div><span class="cq" style="background:linear-gradient(140deg,var(--ouro),var(--ouro-f))"></span><span><b style="color:var(--ouro)">Números dourados = Moldura</b> (a borda do volante).</span></div>
           <div><span class="cq" style="background:linear-gradient(140deg,var(--azul),#1f6fbf)"></span><span><b style="color:var(--azul)">Números azuis = Miolo</b> (o centro do volante). A combinação exata entre eles faz parte do método e é aplicada automaticamente.</span></div>
